@@ -1,8 +1,8 @@
 <template>
-    <div id="menu_" class="menu_manage">
-        <el-row>
+    <d2-container id="menu_" class="menu_manage">
+      <template slot="header">
         <el-button type="primary" @click="formDialogVisible = true;isSV = '0';" size="mini">添加根节点</el-button>
-        </el-row>
+      </template>
         <el-tree
                 :props="defaultProps"
                 :data="data"
@@ -67,7 +67,7 @@
         </el-dialog>
 
 
-    </div>
+    </d2-container>
 </template>
 
 <script>

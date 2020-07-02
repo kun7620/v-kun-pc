@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <d2-container>
         <el-table
                 :data="rightList"
 
@@ -42,7 +42,7 @@
                     label="描述">
             </el-table-column>
         </el-table>
-    </div>
+    </d2-container>
 </template>
 
 <script>

@@ -6,14 +6,14 @@
 export function elMenuItem (h, menu) {
   let icon = null
   if (menu.icon) icon = <i class={ `${menu.icon}` }/>
-  else if (menu.iconSvg) icon = <d2-icon-svg name={ menu.iconSvg }/>
-  else icon = <i class="file-o"/>
+else if (menu.iconSvg) icon = <d2-icon-svg name={ menu.iconSvg }/>
+else icon = <i class="fa fa-file-o"/>
   return <el-menu-item
-    key={ menu.menuPath + window.vue.hk.getUuid()}
-    index={ (menu.menuPath==null || menu.menuPath==='')?'404':menu.menuPath }>
+  key={ menu.path }
+  index={ menu.path }>
     { icon }
     <span slot="title">{ menu.title || '未命名菜单' }</span>
-  </el-menu-item>
+    </el-menu-item>
 }
 
 /**
@@ -24,15 +24,15 @@ export function elMenuItem (h, menu) {
 export function elSubmenu (h, menu) {
   let icon = null
   if (menu.icon) icon = <i slot="title" class={ `${menu.icon}` }/>
-  else if (menu.iconSvg) icon = <d2-icon-svg slot="title" name={ menu.iconSvg }/>
-  else icon = <i slot="title" class="fa fa-folder-o"/>
+else if (menu.iconSvg) icon = <d2-icon-svg slot="title" name={ menu.iconSvg }/>
+else icon = <i slot="title" class="fa fa-folder-o"/>
   return <el-submenu
-    key={ menu.menuPath + window.vue.hk.getUuid()}
-    index={ (menu.menuPath==null || menu.menuPath==='')?'404':menu.menuPath }>
+  key={ menu.path }
+  index={ menu.path }>
     { icon }
     <span slot="title">{ menu.title || '未命名菜单' }</span>
-    { menu.children.map(child => createMenu.call(this, h, child)) }
-  </el-submenu>
+  { menu.children.map(child => createMenu.call(this, h, child)) }
+</el-submenu>
 }
 
 /**

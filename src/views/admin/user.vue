@@ -104,7 +104,7 @@
 
 <script>
 export default {
-  inject: ['reload'],
+  // inject: ['reload'],
   name: 'user',
   data: function () {
     return {

@@ -35,8 +35,9 @@ export default {
             }
             for(let menu of r.data){
               menu.icon = menu.menuIco;
-              menu.index = menu.menuPath===''||menu.menuPath ==null?that.hk.getUuid():menu.menuPath;
+              menu.index = (menu.menuPath===''||menu.menuPath ==null)?that.hk.getUuid():menu.menuPath;
               menu.title = menu.menuTitle;
+              menu.path = "/"+menu.index;
             }
             console.log(r.data)
             let menu = that.hk.toTreeData(r.data,{

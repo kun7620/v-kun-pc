@@ -1,8 +1,8 @@
 <template>
-    <div>
-        <div>
-            <el-button type="primary" @click="openAdd">新增角色</el-button>
-        </div>
+    <d2-container>
+      <template slot="header">
+        <el-button type="primary" @click="openAdd">新增角色</el-button>
+      </template>
         <el-table
                 :data="roleList"
                 style="width: 100%">
@@ -95,7 +95,7 @@
                 <el-button type="primary" @click="isAdd?saveRole():updateRole()">提交</el-button>
             </el-form>
         </el-dialog>
-    </div>
+    </d2-container>
 </template>
 
 <script>

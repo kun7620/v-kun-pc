@@ -76,84 +76,84 @@
 </template>
 
 <script>
-import d2MenuSide from './components/menu-side'
-import d2MenuHeader from './components/menu-header'
-import d2Tabs from './components/tabs'
-import d2HeaderFullscreen from './components/header-fullscreen'
-import d2HeaderLocales from './components/header-locales'
-import d2HeaderSearch from './components/header-search'
-import d2HeaderSize from './components/header-size'
-import d2HeaderTheme from './components/header-theme'
-import d2HeaderUser from './components/header-user'
-import d2HeaderLog from './components/header-log'
-import d2HeaderColor from './components/header-color'
-import { mapState, mapGetters, mapActions } from 'vuex'
-import mixinSearch from './mixins/search'
-export default {
-  name: 'd2-layout-header-aside',
-  mixins: [
-    mixinSearch
-  ],
-  components: {
-    d2MenuSide,
-    d2MenuHeader,
-    d2Tabs,
-    d2HeaderFullscreen,
-    d2HeaderLocales,
-    d2HeaderSearch,
-    d2HeaderSize,
-    d2HeaderTheme,
-    d2HeaderUser,
-    d2HeaderLog,
-    d2HeaderColor
-  },
-  data () {
-    return {
-      // [侧边栏宽度] 正常状态
-      asideWidth: '200px',
-      // [侧边栏宽度] 折叠状态
-      asideWidthCollapse: '65px'
-    }
-  },created() {
+  import d2MenuSide from './components/menu-side'
+  import d2MenuHeader from './components/menu-header'
+  import d2Tabs from './components/tabs'
+  import d2HeaderFullscreen from './components/header-fullscreen'
+  import d2HeaderLocales from './components/header-locales'
+  import d2HeaderSearch from './components/header-search'
+  import d2HeaderSize from './components/header-size'
+  import d2HeaderTheme from './components/header-theme'
+  import d2HeaderUser from './components/header-user'
+  import d2HeaderLog from './components/header-log'
+  import d2HeaderColor from './components/header-color'
+  import { mapState, mapGetters, mapActions } from 'vuex'
+  import mixinSearch from './mixins/search'
+  export default {
+    name: 'd2-layout-header-aside',
+    mixins: [
+      mixinSearch
+    ],
+    components: {
+      d2MenuSide,
+      d2MenuHeader,
+      d2Tabs,
+      d2HeaderFullscreen,
+      d2HeaderLocales,
+      d2HeaderSearch,
+      d2HeaderSize,
+      d2HeaderTheme,
+      d2HeaderUser,
+      d2HeaderLog,
+      d2HeaderColor
+    },
+    data () {
+      return {
+        // [侧边栏宽度] 正常状态
+        asideWidth: '200px',
+        // [侧边栏宽度] 折叠状态
+        asideWidthCollapse: '65px'
+      }
+    },
+    computed: {
+      ...mapState('d2admin', {
+        keepAlive: state => state.page.keepAlive,
+        grayActive: state => state.gray.active,
+        transitionActive: state => state.transition.active,
+        asideCollapse: state => state.menu.asideCollapse,
+        asideTransition: state => state.menu.asideTransition
+      }),
+      ...mapGetters('d2admin', {
+        themeActiveSetting: 'theme/activeSetting'
+      }),
+      /**
+       * @description 最外层容器的背景图片样式
+       */
+      styleLayoutMainGroup () {
+        return this.themeActiveSetting.backgroundImage
+          ? { backgroundImage: `url('${this.$baseUrl}${this.themeActiveSetting.backgroundImage}')` }
+          : {}
+      }
+    },created() {
 
-    // 设置侧边菜单
-    this.$store.commit('d2admin/menu/asideSet', this.hk.data('menu')[this.hk.data('activeUser')['userPhone']]);
-  },
-  computed: {
-    ...mapState('d2admin', {
-      keepAlive: state => state.page.keepAlive,
-      grayActive: state => state.gray.active,
-      transitionActive: state => state.transition.active,
-      asideCollapse: state => state.menu.asideCollapse,
-      asideTransition: state => state.menu.asideTransition
-    }),
-    ...mapGetters('d2admin', {
-      themeActiveSetting: 'theme/activeSetting'
-    }),
-    /**
-     * @description 最外层容器的背景图片样式
-     */
-    styleLayoutMainGroup () {
-      return this.themeActiveSetting.backgroundImage
-        ? { backgroundImage: `url('${this.$baseUrl}${this.themeActiveSetting.backgroundImage}')` }
-        : {}
-    }
-  },
-  methods: {
-    ...mapActions('d2admin/menu', [
-      'asideCollapseToggle'
-    ]),
-    /**
-     * 接收点击切换侧边栏的按钮
-     */
-    handleToggleAside () {
-      this.asideCollapseToggle()
+      // 设置侧边菜单
+      this.$store.commit('d2admin/menu/asideSet', this.hk.data('menu')[this.hk.data('activeUser')['userPhone']]);
+    },
+    methods: {
+      ...mapActions('d2admin/menu', [
+        'asideCollapseToggle'
+      ]),
+      /**
+       * 接收点击切换侧边栏的按钮
+       */
+      handleToggleAside () {
+        this.asideCollapseToggle()
+      }
     }
   }
-}
 </script>
 
 <style lang="scss">
-// 注册主题
-@import '~@/assets/style/theme/register.scss';
+  // 注册主题
+  @import '~@/assets/style/theme/register.scss';
 </style>

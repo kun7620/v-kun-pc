@@ -27,8 +27,42 @@ const frameIn = [
         component: _import('admin/user'),
         meta: { title: '用户管理' }
       },
-      // 演示页面
       {
+        path: 'role',
+        name: 'role',
+        component: _import('admin/role'),
+        meta: { title: '角色管理' }
+      },
+      {
+        path: 'menu_',
+        name: 'menu_',
+        component: _import('admin/menu'),
+        meta: { title: '菜单管理' }
+      },
+      {
+        path: 'right',
+        name: 'right',
+        component: _import('admin/right'),
+        meta: { title: '权限管理' }
+      },
+      {
+        path: 'dict',
+        name: 'dict',
+        component: _import('admin/dict'),
+        meta: { title: '数据字典' }
+      },
+      {
+        path: 'task',
+        name: 'task',
+        component: _import('admin/task'),
+        meta: { title: '定时任务' }
+      },
+      {
+        path: 'iconfont',
+        name: 'iconfont',
+        component: _import('admin/iconfont'),
+        meta: { title: 'iconfont' }
+      },{
         path: 'page1',
         name: 'page1',
         meta: {

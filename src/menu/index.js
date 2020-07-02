@@ -40,4 +40,3 @@ export const menuAside = supplementPath([
     ]
   }
 ])
-// export const menuAside = supplementPath(window.vue.hk.data('menu')[window.vue.hk.data('activeUser')['userPhone']])
