@@ -201,7 +201,7 @@ export default {
                 that.formDialogVisible = false
                 if (r.code === 0) {
                   that.$message.success('操作成功')
-                  that.reload(this.$route.fullPath)
+                  // that.reload(this.$route.fullPath)
                 } else {
                   that.$alert(r.msg, '操作失败', {
                     confirmButtonText: '确定',
