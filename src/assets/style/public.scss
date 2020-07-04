@@ -58,3 +58,11 @@ $prefix: d2;
 .icondelete{
   color:#F56C6C
 }
+
+/* 列表页排序号 */
+.updateSort{
+  width: 80px;
+}
+.updateSort .el-input__inner{
+  text-align: center;
+}

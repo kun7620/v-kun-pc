@@ -59,7 +59,7 @@
         prop="menuSort"
         label="排序号">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.menuSort" @change="updateSort(scope.row)"></el-input>
+          <el-input class="updateSort" v-model="scope.row.menuSort" @change="updateSort(scope.row)"></el-input>
         </template>
       </el-table-column>
       <el-table-column label="操作">
