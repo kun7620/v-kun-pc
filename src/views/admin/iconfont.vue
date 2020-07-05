@@ -16,7 +16,7 @@
         },
         created() {
             let that = this;
-            this.axios.get('/public/getIconFonts?url='+window.hkConfig.iconfontUrl)
+            this.axios.get('/public/requestGet?url='+window.hkConfig.iconfontUrl)
                 .then(r=>{
                     if(r.code === 0){
                         let split = r.data.split(':before');
