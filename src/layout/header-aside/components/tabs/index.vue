@@ -102,7 +102,7 @@ export default {
      * @param {Object} page 其中一个标签页
      */
     isTabClosable (page) {
-      return page.name !== 'index'
+      return page.name !== 'home'
     },
     /**
      * @description 右键菜单功能点击

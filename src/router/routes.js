@@ -9,15 +9,16 @@ const _import = require('@/libs/util.import.' + process.env.NODE_ENV)
 const frameIn = [
   {
     path: '/',
-    redirect: { name: 'index' },
+    redirect: { name: 'home' },
     component: layoutHeaderAside,
     children: [
       // 首页
       {
-        path: 'index',
-        name: 'index',
+        path: 'home',
+        name: 'home',
         meta: {
-          auth: true
+          auth: true,
+          title: '首页'
         },
         component: _import('system/index')
       },
@@ -58,36 +59,22 @@ const frameIn = [
         meta: { title: '定时任务' }
       },
       {
+        path: 'ueditor',
+        name: 'ueditor',
+        component: _import('admin/ueditor'),
+        meta: { title: 'UEditor' }
+      },
+      {
         path: 'iconfont',
         name: 'iconfont',
         component: _import('admin/iconfont'),
         meta: { title: 'iconfont' }
-      },{
-        path: 'page1',
-        name: 'page1',
-        meta: {
-          title: '页面 1',
-          auth: true
-        },
-        component: _import('demo/page1')
       },
       {
-        path: 'page2',
-        name: 'page2',
-        meta: {
-          title: '页面 2',
-          auth: true
-        },
-        component: _import('demo/page2')
-      },
-      {
-        path: 'page3',
-        name: 'page3',
-        meta: {
-          title: '页面 3',
-          auth: true
-        },
-        component: _import('demo/page3')
+        path: 'images',
+        name: 'images',
+        component: _import('admin/images'),
+        meta: { title: 'images' }
       },
       // 系统 前端日志
       {
