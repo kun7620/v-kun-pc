@@ -95,12 +95,15 @@
         <el-table-column
           prop="subject"
           label="邮件主题">
+          <template slot-scope="scope">
+            <i class="iconfont " :class="{'iconyouxiang1': scope.row.read,'iconyouxiang-heshang': !scope.row.read}" :style="{color:scope.row.read?'#909399':'#F56C6C'}"></i>
+            {{scope.row.subject}}
+          </template>
         </el-table-column>
         <el-table-column
           label="操作">
           <template slot-scope="scope">
-            <i class="iconfont iconedit1 iconButton"
-               @click="viewEmailContnt(scope.row.content)"></i>
+            <a href="javascript:void(0);" class="hk-button" @click="viewEmailContnt(scope.row.content)">查看内容</a>
           </template>
         </el-table-column>
       </el-table>

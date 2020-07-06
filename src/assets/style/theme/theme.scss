@@ -306,7 +306,8 @@
             border-bottom: none;
             .d2-container-full__header {
               border-bottom: $theme-container-border-inner;
-              background: $theme-container-header-footer-background-color;
+              //background: $theme-container-header-footer-background-color;
+              background: $theme-container-background-color;
             }
             .d2-container-full__body {
               background: $theme-container-background-color;
