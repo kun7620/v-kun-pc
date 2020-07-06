@@ -9,7 +9,7 @@ const _import = require('@/libs/util.import.' + process.env.NODE_ENV)
 const frameIn = [
   {
     path: '/',
-    redirect: { name: 'home' },
+    redirect: { name: 'index' },
     component: layoutHeaderAside,
     children: [
       // 首页
@@ -76,6 +76,16 @@ const frameIn = [
         component: _import('admin/images'),
         meta: { title: 'images' }
       },
+      {
+        path: '/blogArticle',
+        component: _import('blog/BlogArticle'),
+        meta: { title: '博文' }
+      },
+      {
+        path: '/articleForm',
+        component: _import('blog/ArticleForm'),
+        meta: { title: '编辑文章' }
+      },
       // 系统 前端日志
       {
         path: 'log',
@@ -108,6 +118,12 @@ const frameIn = [
  * 在主框架之外显示
  */
 const frameOut = [
+  {
+    path: '/index',
+    name: 'index',
+    component: _import('blog/index'),
+    meta: { title: '博客' }
+  },
   // 登录
   {
     path: '/login',

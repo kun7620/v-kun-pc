@@ -233,7 +233,7 @@
     .user {
       padding: 20px;
       background-color: white;
-      border-radius: 5px;
+      border-radius: 4px;
 
       .user-info {
         display: flex;
@@ -281,7 +281,7 @@
     .system {
       padding: 20px;
       background-color: white;
-      border-radius: 5px;
+      border-radius: 4px;
       margin-top: 20px;
 
       ul {
@@ -308,7 +308,7 @@
     .carousel {
       padding: 20px;
       background-color: white;
-      border-radius: 5px;
+      border-radius: 4px;
       .carouselImg{
         width: 100%;
         height: 100%;
@@ -321,7 +321,14 @@
 
     .email {
       padding: 20px;
+      border-radius: 4px;
     }
   }
-
+  .user, .system, .carousel, .el-table{
+    /*box-shadow: 0 0 5px 0 #EBEEF5;*/
+    border: 1px solid #EBEEF5;
+    &:hover{
+      box-shadow: 0 2px 12px 0 rgba(0,0,0,.1)
+    }
+  }
 </style>
