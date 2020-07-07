@@ -53,7 +53,7 @@ export default {
             });
             // 设置当前登录用户
             that.hk.data('activeUser',{userPhone:userPhone,userPassword:userPassword,isPwd:isPwd});
-            that.$router.replace('/');
+            that.$router.replace('/home');
 
 
             // 设置 cookie 一定要存 uuid 和 token 两个 cookie
