@@ -112,112 +112,112 @@
 </template>
 
 <script>
-  export default {
-    components: {},
-    data() {
-      return {
-        // carousels: ["https://desk-fd.zol-img.com.cn/t_s1920x1080c5/g3/M07/0E/0C/ChMlWF7oS_2IGSpxACCEJ-b0kqYAAU0hgJ6AJYAIIQ_536.jpg",
-        //   "https://desk-fd.zol-img.com.cn/t_s1920x1080c5/g3/M05/0E/0C/ChMlWF7oS-2IHrg4AA6sI2eREhkAAU0hANldOMADqw7121.jpg",
-        // "https://picsum.photos/id/0/5616/3744"],
-        carousels: ["https://api.ixiaowai.cn/gqapi/gqapi.php?a=1",
-          "https://api.ixiaowai.cn/gqapi/gqapi.php?2",
-        "https://api.ixiaowai.cn/gqapi/gqapi.php?3"],
-        inboxEmail: [],
-        // 系统信息
-        systemProperty: {
-          // 用户名
-          userName: "OnlyDream",
-          // 本机ip
-          ip: "10.198.75.60",
-          // Java的运行环境版本
-          javaVersion: "1.8.0_131",
-          // 操作系统的名称
-          osName: "Windows 10",
-          // 操作系统的构架
-          osArch: "amd64",
-          // 运行总内存
-          totalSwapSpaceSize: "21703421952",
-          // 可用运行内存
-          freePhysicalMemorySize: "4998647808",
-          // 内存百分比
-          size: 0,
-          // 磁盘总量
-          totalSpace: "214746263552",
-          // 磁盘已使用量
-          freeSpace: "36510617600",
-          // 磁盘百分比
-          space: 0,
-          // JVM可以使用的总内存
-          totalMemory: "10",
-          // JVM可以使用的剩余内存
-          freeMemory: "8",
-          // JVM百分比
-          memory: 0
-        },
-        // 用户
-        user: {
-          userNickname: 'v-kun',
-          roleName: '超级管理员',
-          userHeadPortrait: 'https://img2.yuntouxiang.com/file/20190607/4e9361d3ba750aa06c33dd1c3aad7bad.jpg',
-          userLastTime: '2020-07-05 08:48:24',
-          userLastLocation: '北京',
-          userLastIp: '127.0.0.1'
-        }
-      }
-    }, created() {
-      this.getData();
-    },
-    methods: {
-      getData() {
-        let that = this;
-        that.axios.get('/admin/user/getHomeData')
-          .then(r => {
-            // ========================= 用户信息 =========================
-            that.user.userNickname = r.data.user.userNickname === '' ? r.data.user.userPhone : r.data.user.userNickname;
-            that.user.roleName = r.data.user.roleName;
-            if (r.data.user.userHeadPortrait !== '') {
-              that.user.userHeadPortrait = r.data.user.userHeadPortrait;
-            }
-            that.user.userLastTime = r.data.user.userLastTime;
-            that.user.userLastLocation = r.data.user.userLastLocation;
-            that.user.userLastIp = r.data.user.userLastIp;
-
-            // ========================= 系统信息 =========================
-            that.systemProperty.userName = r.data.systemProperty.userName;
-            that.systemProperty.ip = r.data.systemProperty.ip;
-            that.systemProperty.javaVersion = r.data.systemProperty.javaVersion;
-            that.systemProperty.osName = r.data.systemProperty.osName;
-            that.systemProperty.osArch = r.data.systemProperty.osArch;
-            that.systemProperty.totalSwapSpaceSize = r.data.systemProperty.totalSwapSpaceSize;
-            that.systemProperty.freePhysicalMemorySize = r.data.systemProperty.freePhysicalMemorySize;
-            that.systemProperty.size = r.data.systemProperty.size;
-            that.systemProperty.totalSpace = r.data.systemProperty.totalSpace;
-            that.systemProperty.freeSpace = r.data.systemProperty.freeSpace;
-            that.systemProperty.space = r.data.systemProperty.space;
-            that.systemProperty.totalMemory = r.data.systemProperty.totalMemory;
-            that.systemProperty.freeMemory = r.data.systemProperty.freeMemory;
-            that.systemProperty.memory = r.data.systemProperty.memory;
-            this.setPercentage();
-
-            that.inboxEmail = r.data.inboxEmail.list;
-
-          })
+export default {
+  components: {},
+  data () {
+    return {
+      // carousels: ["https://desk-fd.zol-img.com.cn/t_s1920x1080c5/g3/M07/0E/0C/ChMlWF7oS_2IGSpxACCEJ-b0kqYAAU0hgJ6AJYAIIQ_536.jpg",
+      //   "https://desk-fd.zol-img.com.cn/t_s1920x1080c5/g3/M05/0E/0C/ChMlWF7oS-2IHrg4AA6sI2eREhkAAU0hANldOMADqw7121.jpg",
+      // "https://picsum.photos/id/0/5616/3744"],
+      carousels: ['https://api.ixiaowai.cn/gqapi/gqapi.php?a=1',
+        'https://api.ixiaowai.cn/gqapi/gqapi.php?2',
+        'https://api.ixiaowai.cn/gqapi/gqapi.php?3'],
+      inboxEmail: [],
+      // 系统信息
+      systemProperty: {
+        // 用户名
+        userName: 'OnlyDream',
+        // 本机ip
+        ip: '10.198.75.60',
+        // Java的运行环境版本
+        javaVersion: '1.8.0_131',
+        // 操作系统的名称
+        osName: 'Windows 10',
+        // 操作系统的构架
+        osArch: 'amd64',
+        // 运行总内存
+        totalSwapSpaceSize: '21703421952',
+        // 可用运行内存
+        freePhysicalMemorySize: '4998647808',
+        // 内存百分比
+        size: 0,
+        // 磁盘总量
+        totalSpace: '214746263552',
+        // 磁盘已使用量
+        freeSpace: '36510617600',
+        // 磁盘百分比
+        space: 0,
+        // JVM可以使用的总内存
+        totalMemory: '10',
+        // JVM可以使用的剩余内存
+        freeMemory: '8',
+        // JVM百分比
+        memory: 0
       },
-      setPercentage() {
-        this.systemProperty.size = Math.round(Number(this.systemProperty.freePhysicalMemorySize) / Number(this.systemProperty.totalSwapSpaceSize) * 100);
-        this.systemProperty.space = Math.round(Number(this.systemProperty.freeSpace) / Number(this.systemProperty.totalSpace) * 100);
-        this.systemProperty.memory = Math.round(Number(this.systemProperty.freeMemory) / Number(this.systemProperty.totalMemory) * 100);
-      },
-      viewEmailContnt(content){
-        this.$alert(content, '邮件内容', {
-          confirmButtonText: '确定',
-          callback: action => {
-
-          }
-        });
+      // 用户
+      user: {
+        userNickname: 'v-kun',
+        roleName: '超级管理员',
+        userHeadPortrait: 'https://img2.yuntouxiang.com/file/20190607/4e9361d3ba750aa06c33dd1c3aad7bad.jpg',
+        userLastTime: '2020-07-05 08:48:24',
+        userLastLocation: '北京',
+        userLastIp: '127.0.0.1'
       }
     }
+  },
+  created () {
+    this.getData()
+  },
+  methods: {
+    getData () {
+      const that = this
+      that.axios.get('/admin/user/getHomeData')
+        .then(r => {
+          // ========================= 用户信息 =========================
+          that.user.userNickname = r.data.user.userNickname === '' ? r.data.user.userPhone : r.data.user.userNickname
+          that.user.roleName = r.data.user.roleName
+          if (r.data.user.userHeadPortrait !== '') {
+            that.user.userHeadPortrait = r.data.user.userHeadPortrait
+          }
+          that.user.userLastTime = r.data.user.userLastTime
+          that.user.userLastLocation = r.data.user.userLastLocation
+          that.user.userLastIp = r.data.user.userLastIp
+
+          // ========================= 系统信息 =========================
+          that.systemProperty.userName = r.data.systemProperty.userName
+          that.systemProperty.ip = r.data.systemProperty.ip
+          that.systemProperty.javaVersion = r.data.systemProperty.javaVersion
+          that.systemProperty.osName = r.data.systemProperty.osName
+          that.systemProperty.osArch = r.data.systemProperty.osArch
+          that.systemProperty.totalSwapSpaceSize = r.data.systemProperty.totalSwapSpaceSize
+          that.systemProperty.freePhysicalMemorySize = r.data.systemProperty.freePhysicalMemorySize
+          that.systemProperty.size = r.data.systemProperty.size
+          that.systemProperty.totalSpace = r.data.systemProperty.totalSpace
+          that.systemProperty.freeSpace = r.data.systemProperty.freeSpace
+          that.systemProperty.space = r.data.systemProperty.space
+          that.systemProperty.totalMemory = r.data.systemProperty.totalMemory
+          that.systemProperty.freeMemory = r.data.systemProperty.freeMemory
+          that.systemProperty.memory = r.data.systemProperty.memory
+          this.setPercentage()
+
+          that.inboxEmail = r.data.inboxEmail.list
+        })
+    },
+    setPercentage () {
+      this.systemProperty.size = Math.round(Number(this.systemProperty.freePhysicalMemorySize) / Number(this.systemProperty.totalSwapSpaceSize) * 100)
+      this.systemProperty.space = Math.round(Number(this.systemProperty.freeSpace) / Number(this.systemProperty.totalSpace) * 100)
+      this.systemProperty.memory = Math.round(Number(this.systemProperty.freeMemory) / Number(this.systemProperty.totalMemory) * 100)
+    },
+    viewEmailContnt (content) {
+      this.$alert(content, '邮件内容', {
+        confirmButtonText: '确定',
+        callback: action => {
+
+        }
+      })
+    }
   }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -95,22 +95,33 @@
 
             remove(node, data) {
                 let that = this;
-                that.axios.delete('/admin/dict?dictCode='+data.dictCode)
-                    .then(r=>{
-                        if (r.code === 0) {
-                            that.getDictlist(that);
-                            that.$message({
-                                message: '操作成功',
-                                type: 'success'
-                            });
-                        } else {
-                            that.$alert(r.msg, '操作失败', {
-                                confirmButtonText: '确定',
-                                callback: action => {
-                                }
-                            });
+              this.$confirm('此操作将删除数据, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                that.axios.delete('/admin/dict?dictCode=' + data.dictCode)
+                  .then(r => {
+                    if (r.code === 0) {
+                      that.getDictlist(that);
+                      that.$message({
+                        message: '操作成功',
+                        type: 'success'
+                      });
+                    } else {
+                      that.$alert(r.msg, '操作失败', {
+                        confirmButtonText: '确定',
+                        callback: action => {
                         }
-                    })
+                      });
+                    }
+                  })
+              }).catch(() => {
+                this.$message({
+                  type: 'info',
+                  message: '已取消删除'
+                })
+              })
                 // hk.ajax({
                 //     url: hostBase + '/admin/dict'
                 //     , method: 'POST'
