@@ -1,5 +1,6 @@
 // 加密
 import CryptoJS from 'crypto-js';
+
 const hk = {
     /**
      * 【增】：两种方式：
@@ -28,7 +29,7 @@ const hk = {
      * @param n
      * @returns {boolean|*}
      */
-    data: function(t, o, n) {
+    data: function (t, o, n) {
         if (t = t || 'hk', n = n || localStorage, JSON.parse) {
             if (null === o) return delete n[t];
             if ((o && 'object' !== typeof o) || ('object' === typeof o && o['key'] == null)) {
@@ -37,7 +38,7 @@ const hk = {
                 }
                 return n[t] = o;
             }
-            o = 'object' == typeof o ? o : { key: o };
+            o = 'object' == typeof o ? o : {key: o};
             let r = '';
             try {
                 r = JSON.parse(n[t]);
@@ -63,7 +64,7 @@ const hk = {
      *                如果使用简介数据格式就只会保留id、parendId、name三个字段
      * @returns {[]}
      */
-    toTreeData: function(data, attr, isConcise) {
+    toTreeData: function (data, attr, isConcise) {
         if (attr == null) {
             attr = {
                 id: 'id', // id字段名
@@ -95,7 +96,7 @@ const hk = {
                 i--;
             }
         }
-        let run = function(treeArrs) {
+        let run = function (treeArrs) {
             if (resData.length > 0) {
                 for (let i = 0; i < treeArrs.length; i++) {
                     for (let j = 0; j < resData.length; j++) {
@@ -131,7 +132,7 @@ const hk = {
      * @param num
      * @returns {string}
      */
-    fenGeString: function(str, num) { //每num位就添加一个逗号
+    fenGeString: function (str, num) { //每num位就添加一个逗号
         //先将str转换为数组
         let strToArr = str.split('');
         for (let i = num; i < str.length; i += num + 1) {
@@ -143,7 +144,7 @@ const hk = {
      * 获取uuid
      * @returns {*} 长度32位不带 -
      */
-    getUuid: function() {
+    getUuid: function () {
         /**
          * @return {string}
          */
@@ -158,7 +159,7 @@ const hk = {
      * @param text 要复制的内容
      * @returns {boolean} 成功返回 true  失败返回 false
      */
-    copy: function(text) {
+    copy: function (text) {
         try {
             let target = document.createElement('div');
             target.innerText = text;
@@ -202,7 +203,7 @@ const hk = {
      * @param key 密钥
      * @returns {string}
      */
-    encrypt:function(word, key) {
+    encrypt: function (word, key) {
         return CryptoJS.AES.encrypt(word, key).toString();
     },
     /**
@@ -211,7 +212,7 @@ const hk = {
      * @param key 密钥
      * @returns {string}
      */
-    decrypt:function(word, key) {
+    decrypt: function (word, key) {
         return CryptoJS.AES.decrypt(word, key).toString(CryptoJS.enc.Utf8);
     },
     /**
@@ -219,8 +220,31 @@ const hk = {
      * @param word 需要加密的文本
      * @returns {*}
      */
-    md5:function(word) {
+    md5: function (word) {
         return CryptoJS.MD5(word).toString();
+    },
+
+    /**
+     * 字节转换成K、M、G、T 单位 保留两位小数
+     * @param size 字节数
+     * @param size 保留的小数位 0或者null表示不保留小数
+     * @returns {string}
+     */
+    transformByte(size, n) {
+        if (!size)
+            return "";
+        if(!n)
+            n = 0;
+        let num = 1024.00; //byte
+        if (size < num)
+            return size + "B";
+        if (size < Math.pow(num, 2))
+            return (size / num).toFixed(n) + "K"; //kb
+        if (size < Math.pow(num, 3))
+            return (size / Math.pow(num, 2)).toFixed(n) + "M"; //M
+        if (size < Math.pow(num, 4))
+            return (size / Math.pow(num, 3)).toFixed(n) + "G"; //G
+        return (size / Math.pow(num, 4)).toFixed(n) + "T"; //T
     }
 };
 export default hk;

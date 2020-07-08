@@ -35,10 +35,10 @@
         <li>
           <h2 class="title"><i class="iconfont iconback" @click="hideContent"></i><a >{{article.articleName}}</a></h2>
           <div class="middle">
-<!--            <div class="articleAbstract" v-html="article.articleContent"></div>-->
-            <el-card shadow="never" class="d2-mb">
-              <d2-highlight :code="article.articleContent"></d2-highlight>
-            </el-card>
+            <div class="articleAbstract" v-html="article.articleContent"></div>
+<!--            <el-card shadow="never" class="d2-mb">-->
+<!--              <d2-highlight :code="article.articleContent"></d2-highlight>-->
+<!--            </el-card>-->
             <div class="tags">
               <a class="tag" href="javascript:void(0)">java</a>
               <a class="tag" href="javascript:void(0)">前端</a>
@@ -82,15 +82,16 @@
         that.axios.get('/public/blog/selectBlogArticleByUuid?articleUuid='+item.articleUuid)
           .then(r=>{
             that.article = r.data;
-            that.article.articleContent = r.data.articleContent.replace(/&nbsp;/g,' ');
-            that.article.articleContent = r.data.articleContent.replace(/<br\/>/g,'\n');
-            that.article.articleContent = r.data.articleContent.replace(/<\/p><p>/g,'\n');
-            that.article.articleContent = r.data.articleContent.replace(/&quot;/g,'"');
-            that.article.articleContent = r.data.articleContent.replace(/<\/p>/g,'');
-            that.article.articleContent = r.data.articleContent.replace(/<p>/g,'');
-            that.article.articleContent = r.data.articleContent.replace(/&gt;/g,'>');
-            that.article.articleContent = r.data.articleContent.replace(/&lt;/g,'<');
-            console.log(that.article.articleContent)
+            // that.article.articleContent = r.data.articleContent.replace(/&nbsp;/g,' ');
+            // that.article.articleContent = r.data.articleContent.replace(/<br\/>/g,'\n');
+            // that.article.articleContent = r.data.articleContent.replace(/<\/p><p>/g,'\n');
+            // that.article.articleContent = r.data.articleContent.replace(/&quot;/g,'"');
+            // that.article.articleContent = r.data.articleContent.replace(/<\/p>/g,'');
+            // that.article.articleContent = r.data.articleContent.replace(/<p>/g,'');
+            // that.article.articleContent = r.data.articleContent.replace(/&gt;/g,'>');
+            // that.article.articleContent = r.data.articleContent.replace(/&lt;/g,'<');
+            // console.log(that.article.articleContent)
+            that.article.articleContent = r.data.articleContent;
             that.isShowContent = true;
 
             that.showLeftSide = true;
