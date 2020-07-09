@@ -28,6 +28,9 @@
                 :close-on-press-escape="false"
                 :close-on-click-modal="false">
             <el-form :model="dictForm" :rules="rules" ref="dictForm" label-width="100px" class="demo-ruleForm">
+                <el-form-item label="字典代码" prop="dictCode" v-if="dictForm.dictCode!=null && dictForm.dictCode!==''">
+                    <el-input v-model="dictForm.dictCode"></el-input>
+                </el-form-item>
                 <el-form-item label="字典名称" prop="dictTitle">
                     <el-input v-model="dictForm.dictTitle"></el-input>
                 </el-form-item>
@@ -60,6 +63,7 @@
                     dictTitle:''
                     ,dictValue:''
                     ,dictExplain:''
+                    ,dictCode:''
                 }
                 ,rules: {
                     dictTitle: [
@@ -79,6 +83,7 @@
                 this.dictForm.dictExplain = data.dictExplain;
                 this.dictForm.dictSuperiorCode = data.dictCode;
                 this.dictForm.dictUuid = data.dictUuid;
+                this.dictForm.dictCode = data.dictCode;
                 this.formDialogVisible = true;
                 this.isSV = '1';
             },
@@ -90,6 +95,7 @@
                 this.dictForm.dictExplain = '';
                 this.dictForm.dictSuperiorCode = data.dictCode;
                 this.dictForm.dictUuid = '';
+                this.dictForm.dictCode = '';
                 that.isSV = '0';
             },
 
