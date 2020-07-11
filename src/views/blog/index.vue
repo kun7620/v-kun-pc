@@ -37,7 +37,7 @@
                     <h2 class="title"><i class="iconfont iconback"
                                          @click="hideContent"></i><a>{{article.articleName}}</a></h2>
                     <div class="middle">
-                        <div class="articleAbstract articleContentDetails" v-html="article.articleContent"></div>
+                        <div class="articleAbstract articleContentDetails" :class="{'articleContentDetailsHide':articleContentDetailsHide}" v-html="article.articleContent"></div>
                         <!--            <el-card shadow="never" class="d2-mb">-->
                         <!--              <d2-highlight :code="article.articleContent"></d2-highlight>-->
                         <!--            </el-card>-->
@@ -55,8 +55,8 @@
 </template>
 
 <script>
-import hljs from 'highlight.js'
-import 'highlight.js/styles/androidstudio.css' // 样式文件
+import hljs from 'highlight.js';
+import 'highlight.js/styles/androidstudio.css'; // 样式文件
 export default {
     name: 'index',
     data () {
@@ -71,22 +71,22 @@ export default {
             showLeftSide: false,
             hideLeftSide: false,
             hideRightSide: false,
-            number: 0
-        }
+            articleContentDetailsHide: true
+        };
     },
     created () {
-        const that = this
+        const that = this;
         that.axios.get('/public/blog')
             .then(r => {
-                that.articleList = r.data
-            })
+                that.articleList = r.data;
+            });
     },
     methods: {
         showContent (item) {
-            const that = this
+            const that = this;
             that.axios.get('/public/blog/selectBlogArticleByUuid?articleUuid=' + item.articleUuid)
                 .then(r => {
-                    that.article = r.data
+                    that.article = r.data;
                     // that.article.articleContent = r.data.articleContent.replace(/&nbsp;/g,' ');
                     // that.article.articleContent = r.data.articleContent.replace(/<br\/>/g,'\n');
                     // that.article.articleContent = r.data.articleContent.replace(/<\/p><p>/g,'\n');
@@ -96,72 +96,73 @@ export default {
                     // that.article.articleContent = r.data.articleContent.replace(/&gt;/g,'>');
                     // that.article.articleContent = r.data.articleContent.replace(/&lt;/g,'<');
                     // console.log(that.article.articleContent)
-                    that.article.articleContent = r.data.articleContent.replace(/&nbsp;/g, ' ')
-                    that.isShowContent = true
+                    that.article.articleContent = r.data.articleContent.replace(/&nbsp;/g, ' ');
+                    that.isShowContent = true;
 
-                    that.showLeftSide = true
-                    that.hideLeftSide = true
-                    that.showRightSide = true
-                    that.hideRightSide = true
+                    that.showLeftSide = true;
+                    that.hideLeftSide = true;
+                    that.showRightSide = true;
+                    that.hideRightSide = true;
                     setTimeout(() => {
-                        const blocks = document.querySelectorAll('pre code')
+                        const blocks = document.querySelectorAll('pre code');
                         // console.log(that.article.articleContent.split('\n').length)
                         // that.number = that.article.articleContent.split('\n').length-2
                         blocks.forEach((block) => {
-                            hljs.highlightBlock(block)
-                        })
+                            hljs.highlightBlock(block);
+                        });
 
                         // 添加行号和copy按钮
-                        const pre = document.getElementsByTagName('pre')
+                        const pre = document.getElementsByTagName('pre');
                         for (let i = 0; i < pre.length; i++) {
-                            const codes = pre[i].getElementsByTagName('code')[0]
+                            const codes = pre[i].getElementsByTagName('code')[0];
                             // 获取换行数
-                            const hhNum = codes.innerHTML.split('\n').length
-                            const dl = document.createElement('dl')
-                            dl.className = 'myLine'
+                            const hhNum = codes.innerHTML.split('\n').length;
+                            const dl = document.createElement('dl');
+                            dl.className = 'myLine';
                             for (let x = 1; x < hhNum; x++) {
-                                const dd = document.createElement('dd')
-                                dd.innerText = x
-                                dl.appendChild(dd)
+                                const dd = document.createElement('dd');
+                                dd.innerText = x;
+                                dl.appendChild(dd);
                             }
                             // 添加行号
-                            pre[i].appendChild(dl)
+                            pre[i].appendChild(dl);
                             // 添加复制按钮
-                            const copy = document.createElement('div')
-                            copy.className = 'copy'
-                            copy.innerText = 'copy'
+                            const copy = document.createElement('div');
+                            copy.className = 'copy';
+                            copy.innerText = 'copy';
                             // 复制按钮添加事件
                             copy.onclick = function () {
-                                const innerText = this.parentNode.getElementsByTagName('code')[0].innerText
+                                const innerText = this.parentNode.getElementsByTagName('code')[0].innerText;
                                 if (that.hk.copy(innerText)) {
-                                    that.$message.success('复制成功！')
+                                    that.$message.success('复制成功！');
                                 } else {
-                                    that.$message.error('代码复制失败，请手动复制！')
+                                    that.$message.error('代码复制失败，请手动复制！');
                                 }
-                            }
-                            pre[i].appendChild(copy)
+                            };
+                            pre[i].appendChild(copy);
                             // 显示或隐藏copy按钮
                             pre[i].onmouseenter = function () {
-                                this.getElementsByClassName('copy')[0].style.display = 'block'
-                            }
+                                this.getElementsByClassName('copy')[0].style.display = 'block';
+                            };
                             pre[i].onmouseleave = function () {
-                                this.getElementsByClassName('copy')[0].style.display = 'none'
-                            }
+                                this.getElementsByClassName('copy')[0].style.display = 'none';
+                            };
                         }
-                    }, 1000)
-                })
+                        that.articleContentDetailsHide = false;
+                    }, 200);
+                });
         },
         hideContent () {
-            const that = this
-            that.isShowContent = false
+            const that = this;
+            that.isShowContent = false;
 
-            that.showLeftSide = false
-            that.hideLeftSide = false
-            that.showRightSide = false
-            that.hideRightSide = false
+            that.showLeftSide = false;
+            that.hideLeftSide = false;
+            that.showRightSide = false;
+            that.hideRightSide = false;
         }
     }
-}
+};
 </script>
 
 <style scoped>
@@ -359,6 +360,9 @@ export default {
     }
 
     /* 代码样式 */
+    .rightSide ul li .middle .articleContentDetailsHide{
+        display: none;
+    }
     .rightSide ul li .middle .articleContentDetails >>> code, .rightSide ul li .middle .articleContentDetails >>> .myLine {
         line-height: 22px;
         font-size: 14px;
