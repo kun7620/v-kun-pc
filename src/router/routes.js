@@ -77,13 +77,15 @@ const frameIn = [
         meta: { title: 'images' }
       },
       {
-        path: '/blogArticle',
-        component: _import('blog/BlogArticle'),
-        meta: { title: '博文' }
+        path: 'blogArticle',
+        name: 'blogArticle',
+        component: _import('blog/blogArticle'),
+        meta: { title: '文章列表' }
       },
       {
-        path: '/articleForm',
-        component: _import('blog/ArticleForm'),
+        path: 'articleForm',
+        name: 'articleForm',
+        component: _import('blog/articleForm'),
         meta: { title: '编辑文章' }
       },
       // 系统 前端日志
