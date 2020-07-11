@@ -15,14 +15,13 @@
             </el-form-item>
             <el-row>
                 <el-button type="primary" @click="submit">提交</el-button>
-                <el-button type="primary" @click="test">提交1</el-button>
             </el-row>
         </el-form>
     </d2-container>
 </template>
 
 <script>
-import ueditor from '../admin/ueditor'
+import ueditor from '../admin/ueditor';
 export default {
     name: 'articleForm',
     components: { ueditor },
@@ -36,17 +35,17 @@ export default {
                 articleContent: '',
                 articleAbstract: ''
             }
-        }
+        };
     },
     methods: {
         submit () {
-            const that = this
-            that.articleAbstract = ''
+            const that = this;
+            that.articleAbstract = '';
             // 提取摘要
-            const plainTxt = this.$refs.ueditor.ue.getPlainTxt()
-            const split = plainTxt.split('\n')
+            const plainTxt = this.$refs.ueditor.ue.getPlainTxt();
+            const split = plainTxt.split('\n');
             for (let i = 0; i < split.length && i < 5; i++) {
-                that.articleAbstract += split[i] + '<br\>'
+                that.articleAbstract += split[i] + '<br\>';
             }
             that.axios.post('/blog/article', {
                 articleName: that.blogArticle.articleName,
@@ -55,14 +54,11 @@ export default {
                 articleContent: this.$refs.ueditor.getContent().replace(/&nbsp;/g, ' ').replace(/<br\/>/g, '\n'),
                 articleAbstract: that.articleAbstract
             }).then(r => {
-                that.$message.success('操作成功')
-            })
-        },
-        test () {
-            console.log(this.$refs.ueditor.getContent())
+                that.$message.success('操作成功');
+            });
         }
     }
-}
+};
 </script>
 
 <style scoped>

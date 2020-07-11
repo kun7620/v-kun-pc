@@ -6,7 +6,7 @@
 
 <script>
 /* https://github.com/HaoChuan9421/vue-ueditor-wrap */
-import VueUeditorWrap from 'vue-ueditor-wrap'
+import VueUeditorWrap from 'vue-ueditor-wrap';
 
 export default {
     name: 'ueditor',
@@ -35,23 +35,23 @@ export default {
                 // UEditor 资源文件的存放路径，如果你使用的是 vue-cli 生成的项目，通常不需要设置该选项，vue-ueditor-wrap 会自动处理常见的情况，如果需要特殊配置，参考下方的常见问题2
                 UEDITOR_HOME_URL: '/lib/ueditor/'
             }
-        }
+        };
     },
     methods: {
         ready (editorInstance) {
-            this.ue = editorInstance
+            this.ue = editorInstance;
         },
         getContent () {
-            return this.content
+            return this.content;
         },
         setContent (content) {
-            this.content = content
+            this.content = content;
         }
     },
     components: {
         VueUeditorWrap
     }
-}
+};
 </script>
 
 <style scoped>

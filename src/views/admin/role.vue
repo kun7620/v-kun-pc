@@ -128,22 +128,22 @@ export default {
             rightList: [],
             rightModuleNameFilters: [], // 模块筛选
             loading: true
-        }
+        };
     },
     created () {
-        const that = this
-        this.getData(that)
+        const that = this;
+        this.getData(that);
     },
     methods: {
         getData (that) {
-            that.defaultChecked = [] // 默认选中的节点
+            that.defaultChecked = []; // 默认选中的节点
             that.axios.get('/admin/role/selectRoleAndMenuAndRight')
                 .then(r => {
                     if (r.code === 0) {
-                        that.roleList = r.data
-                        that.loading = false
+                        that.roleList = r.data;
+                        that.loading = false;
                     }
-                })
+                });
             // 查菜单
             that.axios.get('/admin/menu')
                 .then(r => {
@@ -153,24 +153,24 @@ export default {
                             parendId: 'menuSuperiorCode', // 父级id字段名
                             name: 'menuTitle', // 名称的字段名
                             rootId: '' // 顶层节点父级id
-                        })
-                        that.menuTree = toTreeData
+                        });
+                        that.menuTree = toTreeData;
                     }
-                })
+                });
             // 查权限
             that.axios.get('/admin/right')
                 .then(r => {
-                    that.rightList = r.data
+                    that.rightList = r.data;
                     // 设置模块名称筛选条件
-                    const rightModuleNameFilters_1 = {}
+                    const rightModuleNameFilters_1 = {};
                     for (const item of r.data) {
-                        rightModuleNameFilters_1[item.rightModuleName] = ''
+                        rightModuleNameFilters_1[item.rightModuleName] = '';
                     }
-                    const rightModuleNameFilters_list = Object.keys(rightModuleNameFilters_1)
+                    const rightModuleNameFilters_list = Object.keys(rightModuleNameFilters_1);
                     for (const ieme of rightModuleNameFilters_list) {
-                        that.rightModuleNameFilters.push({ text: ieme, value: ieme })
+                        that.rightModuleNameFilters.push({ text: ieme, value: ieme });
                     }
-                })
+                });
         },
         openAdd () {
         // 新增时把值全部清空
@@ -179,11 +179,11 @@ export default {
                 roleName: '',
                 roleDescription: '',
                 roleStatus: true
-            }
-            this.defaultChecked = []
-            this.isAdd = true
+            };
+            this.defaultChecked = [];
+            this.isAdd = true;
             // 开打表单
-            this.formDialog = true
+            this.formDialog = true;
         },
         openEdit (item) {
             this.coreRole = {
@@ -192,124 +192,124 @@ export default {
                 roleDescription: item.roleDescription,
                 roleStatus: item.roleStatus === '0' || item.roleStatus === 0,
                 rightUuid: item.rightUuid
-            }
-            const that = this
-            this.defaultChecked = (item.menuUuid == null || item.menuUuid == '') ? [] : item.menuUuid.split(',')
-            const parse = JSON.parse(JSON.stringify(this.defaultChecked))
+            };
+            const that = this;
+            this.defaultChecked = (item.menuUuid == null || item.menuUuid == '') ? [] : item.menuUuid.split(',');
+            const parse = JSON.parse(JSON.stringify(this.defaultChecked));
             // 设置树已选择节点时，不能设置父节点，否则父节点下的所有子节点都会被选中
             // 循环删除所有子节点的父节点
             this.defaultChecked.forEach(function (ele, index) {
                 // 判断如果id长度大于三位数 说明还有上级
                 if (ele.length > 3) {
-                    const strings = that.hk.fenGeString(ele, 3).split(',')
+                    const strings = that.hk.fenGeString(ele, 3).split(',');
                     // 一层层往上找
                     for (let i = 0; i < strings.length - 1; i++) {
                         for (let x = 0; x < parse.length; x++) {
                             if (parse[x] === strings[i]) {
-                                parse.splice(x, 1)
+                                parse.splice(x, 1);
                             }
                         }
                     }
                 }
                 // that.coreRole.menuUuid+=ele+',';
-            })
-            this.defaultChecked = (parse != null && parse.length > 0) ? parse : []
+            });
+            this.defaultChecked = (parse != null && parse.length > 0) ? parse : [];
 
-            this.isAdd = false
-            this.formDialog = true
+            this.isAdd = false;
+            this.formDialog = true;
 
             // 设置权限选中行
             this.$nextTick(() => {
                 for (const row of that.rightList) {
-                    if (that.coreRole.rightUuid.indexOf(row.rightUuid) !== -1) { that.$refs.multipleTable.toggleRowSelection(row) }
+                    if (that.coreRole.rightUuid.indexOf(row.rightUuid) !== -1) { that.$refs.multipleTable.toggleRowSelection(row); }
                 }
-            })
+            });
         },
         saveRole () {
-            const that = this
-            that.getFormData(that)
+            const that = this;
+            that.getFormData(that);
             that.axios.post('/admin/role', that.coreRole)
                 .then(r => {
-                    that.formDialog = false
+                    that.formDialog = false;
                     if (r.code === 0) {
-                        that.getData(that)
-                        that.$message.success('操作成功')
+                        that.getData(that);
+                        that.$message.success('操作成功');
                     } else {
-                        that.$message.error('操作失败：' + r.msg)
+                        that.$message.error('操作失败：' + r.msg);
                     }
-                })
+                });
         },
         updateRole () {
-            const that = this
-            that.getFormData(that)
+            const that = this;
+            that.getFormData(that);
             that.axios.put('/admin/role', that.coreRole)
                 .then(r => {
-                    that.formDialog = false
+                    that.formDialog = false;
                     if (r.code === 0) {
-                        that.getData(that)
-                        that.$message.success('操作成功')
+                        that.getData(that);
+                        that.$message.success('操作成功');
                     } else {
-                        that.$message.error('操作失败：' + r.msg)
+                        that.$message.error('操作失败：' + r.msg);
                     }
-                })
+                });
         },
         getFormData (that) {
         // 设置选中的菜单
-            const checkedKeys = that.$refs.menuTree.getCheckedKeys()
-            that.coreRole.menuUuid = ''
+            const checkedKeys = that.$refs.menuTree.getCheckedKeys();
+            that.coreRole.menuUuid = '';
             checkedKeys.forEach(function (ele, index) {
                 // 判断如果id长度大于三位数 说明还有上级，需要把上级带上
                 if (ele.length > 3) {
-                    const strings = that.hk.fenGeString(ele, 3).split(',')
+                    const strings = that.hk.fenGeString(ele, 3).split(',');
                     // 一层层往上找
                     for (let i = 0; i < strings.length - 1; i++) {
                         // 判断上级是否已经被加入
                         if (that.coreRole.menuUuid.indexOf(strings[i] + ',') === -1) {
                             // 把上级加入
-                            that.coreRole.menuUuid += strings[i] + ','
+                            that.coreRole.menuUuid += strings[i] + ',';
                         }
                     }
                 }
-                that.coreRole.menuUuid += ele + ','
-            })
-            that.coreRole.menuUuid = that.coreRole.menuUuid.substring(0, that.coreRole.menuUuid.length - 1)
+                that.coreRole.menuUuid += ele + ',';
+            });
+            that.coreRole.menuUuid = that.coreRole.menuUuid.substring(0, that.coreRole.menuUuid.length - 1);
             // 转换已选中的权限
             // that.roleList = that.selectRoleList.join();
             // 转换启用状态
-            that.coreRole.roleStatus = that.coreRole.roleStatus ? 0 : 1
+            that.coreRole.roleStatus = that.coreRole.roleStatus ? 0 : 1;
         },
         handleClose (done) {
-            this.$refs.menuTree.setCheckedKeys([])
-            done()
+            this.$refs.menuTree.setCheckedKeys([]);
+            done();
         },
         tableMethodClassName ({ row, rowIndex }) {
             switch (row.rightMethod) {
             case 'get':
-                return 'primary'
+                return 'primary';
             case 'post':
-                return 'success'
+                return 'success';
             case 'put':
-                return 'warning'
+                return 'warning';
             case 'delete':
-                return 'danger'
+                return 'danger';
             default:
-                return ''
+                return '';
             }
         },
         // 模块名称筛选方法
         rightModuleNameFiltersMethod (value, row, column) {
-            const property = column.property
-            return row[property] === value
+            const property = column.property;
+            return row[property] === value;
         },
         toggleRowSelection (row) {
-            const list = []
+            const list = [];
             for (const one of row) {
-                list.push(one.rightUuid)
+                list.push(one.rightUuid);
             }
-            this.coreRole.rightUuid = list.join()
+            this.coreRole.rightUuid = list.join();
         }
     }
-}
+};
 </script>
 
 <style scoped>

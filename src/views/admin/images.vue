@@ -17,20 +17,20 @@ export default {
             images: [],
             url: 'https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg',
             srcList: ['https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg']
-        }
+        };
     },
     created () {
-        const that = this
+        const that = this;
         this.axios.get('/public/requestGet?url=' + encodeURIComponent('https://picsum.photos/v2/list?page=1&limit=10'))
             .then(r => {
-                that.images = JSON.parse(r.data)
+                that.images = JSON.parse(r.data);
                 for (const item of that.images) {
-                    item.srcList = [item.download_url]
+                    item.srcList = [item.download_url];
                 }
-                console.log(that.srcList)
-            })
+                console.log(that.srcList);
+            });
     }
-}
+};
 </script>
 
 <style scoped>

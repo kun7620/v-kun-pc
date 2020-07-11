@@ -117,7 +117,7 @@
 </template>
 
 <script>
-import iconfont from './iconfont'
+import iconfont from './iconfont';
 
 export default {
     name: 'menu_',
@@ -146,41 +146,41 @@ export default {
             },
             visibleIcon: false,
             showTree: false
-        }
+        };
     },
     created: function () {
-        this.getMenulist(this)
+        this.getMenulist(this);
     },
     methods: {
         setClass (name) {
-            this.menuForm.menuIco = 'iconfont ' + name
-            this.visibleIcon = false
+            this.menuForm.menuIco = 'iconfont ' + name;
+            this.visibleIcon = false;
         },
         edit (data) {
-            this.menuForm.menuTitle = data.menuTitle
-            this.menuForm.menuPath = data.menuPath
-            this.menuForm.menuIco = data.menuIco
-            this.menuForm.menuOpenWay = data.menuOpenWay
-            this.menuForm.menuSuperiorCode = data.menuCode
-            this.menuForm.menuUuid = data.menuUuid
-            this.menuForm.menuSort = data.menuSort
-            this.formDialogVisible = true
-            this.isSV = '1'
+            this.menuForm.menuTitle = data.menuTitle;
+            this.menuForm.menuPath = data.menuPath;
+            this.menuForm.menuIco = data.menuIco;
+            this.menuForm.menuOpenWay = data.menuOpenWay;
+            this.menuForm.menuSuperiorCode = data.menuCode;
+            this.menuForm.menuUuid = data.menuUuid;
+            this.menuForm.menuSort = data.menuSort;
+            this.formDialogVisible = true;
+            this.isSV = '1';
         },
         append (data) {
-            const that = this
-            that.formDialogVisible = true
-            this.menuForm.menuTitle = ''
-            this.menuForm.menuPath = ''
-            this.menuForm.menuIco = ''
-            this.menuForm.menuOpenWay = ''
-            this.menuForm.menuSuperiorCode = data == null ? '' : data.menuCode
-            this.menuForm.menuUuid = ''
-            that.isSV = '0'
+            const that = this;
+            that.formDialogVisible = true;
+            this.menuForm.menuTitle = '';
+            this.menuForm.menuPath = '';
+            this.menuForm.menuIco = '';
+            this.menuForm.menuOpenWay = '';
+            this.menuForm.menuSuperiorCode = data == null ? '' : data.menuCode;
+            this.menuForm.menuUuid = '';
+            that.isSV = '0';
         },
 
         remove (data) {
-            const that = this
+            const that = this;
             this.$confirm('此操作将删除该数据, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
@@ -189,87 +189,87 @@ export default {
                 that.axios.delete('/admin/menu?menuCode=' + data.menuCode, { menuCode: data.menuCode })
                     .then(r => {
                         if (r.code === 0) {
-                            that.getMenulist(that)
+                            that.getMenulist(that);
                             that.$message({
                                 message: '操作成功',
                                 type: 'success'
-                            })
+                            });
                         } else {
                             that.$alert(r.msg, '操作失败', {
                                 confirmButtonText: '确定',
                                 callback: action => {
                                 }
-                            })
+                            });
                         }
-                    })
+                    });
             }).catch(() => {
                 this.$message({
                     type: 'info',
                     message: '已取消删除'
-                })
-            })
+                });
+            });
         },
         save () {
-            const that = this
+            const that = this;
             const da = {
                 menuTitle: that.menuForm.menuTitle,
                 menuPath: that.menuForm.menuPath,
                 menuIco: that.menuForm.menuIco,
                 menuOpenWay: that.menuForm.menuOpenWay
-            }
+            };
             if (that.isSV === '1') { // 如果是修改操作需要带上uuid
-                da.menuUuid = that.menuForm.menuUuid
+                da.menuUuid = that.menuForm.menuUuid;
                 this.axios.put('/admin/menu', da)
                     .then(r => {
                         if (r.code === 0) {
-                            that.getMenulist(that)
-                            that.formDialogVisible = false
+                            that.getMenulist(that);
+                            that.formDialogVisible = false;
                             that.$message({
                                 message: '操作成功',
                                 type: 'success'
-                            })
+                            });
                         } else {
                             that.$alert(r.msg, '操作失败', {
                                 confirmButtonText: '确定',
                                 callback: action => {
                                 }
-                            })
+                            });
                         }
-                    })
+                    });
             } else if (that.isSV === '0') { // 如果是新增操作需要带上上级coed
-                da.menuSuperiorCode = that.menuForm.menuSuperiorCode
+                da.menuSuperiorCode = that.menuForm.menuSuperiorCode;
                 this.axios.post('/admin/menu', da)
                     .then(r => {
                         if (r.code === 0) {
-                            that.getMenulist(that)
-                            that.formDialogVisible = false
+                            that.getMenulist(that);
+                            that.formDialogVisible = false;
                             that.$message({
                                 message: '操作成功',
                                 type: 'success'
-                            })
+                            });
                         } else {
                             that.$alert(r.msg, '操作失败', {
                                 confirmButtonText: '确定',
                                 callback: action => {
                                 }
-                            })
+                            });
                         }
-                    })
+                    });
             }
         },
         showIcons () {
-            const that = this
-            that.iconVisible = true
-            const l = document.getElementsByClassName('menu-popover-icon-list')[0].getElementsByTagName('li')
+            const that = this;
+            that.iconVisible = true;
+            const l = document.getElementsByClassName('menu-popover-icon-list')[0].getElementsByTagName('li');
             for (let i = 0; i < l.length; i++) {
                 l[i].onclick = function (r) {
-                    that.menuForm.menuIco = r.target.className
-                    that.iconVisible = false
-                }
+                    that.menuForm.menuIco = r.target.className;
+                    that.iconVisible = false;
+                };
             }
         },
         handleDragEnd (draggingNode, dropNode, dropType, ev) {
-            const that = this
+            const that = this;
             this.axios.post('/admin/menu/moveNode', {
                 draggingNodeCode: draggingNode.data.menuCode,
                 draggingNodeSuperiorCode: draggingNode.data.menuSuperiorCode,
@@ -285,67 +285,67 @@ export default {
                     that.$message({
                         message: '操作成功',
                         type: 'success'
-                    })
-                    that.getMenulist(that)
+                    });
+                    that.getMenulist(that);
                 } else {
                     that.$alert(r.msg, '操作失败', {
                         confirmButtonText: '确定',
                         callback: action => {
                         }
-                    })
+                    });
                 }
-            })
+            });
         },
         getMenulist: function () {
-            const that = this
+            const that = this;
             this.axios.get('/admin/menu')
                 .then(r => {
                     if (r.code === 0) {
-                        that.data = JSON.parse(JSON.stringify(this.formattingMenuTree(r.data)))
+                        that.data = JSON.parse(JSON.stringify(this.formattingMenuTree(r.data)));
                     } else {
                         that.$alert(r.msg, '获取列表失败', {
                             confirmButtonText: '确定',
                             callback: action => {
                             }
-                        })
+                        });
                     }
-                })
+                });
         },
         formattingMenuTree: function (list) {
             for (let i = list.length - 1; i >= 0; i--) {
                 for (let x = 0; x < list.length; x++) {
                     if (list[x].menuCode === list[i].menuSuperiorCode) {
                         if (list[x].children == null) {
-                            list[x].children = [list[i]]
+                            list[x].children = [list[i]];
                         } else {
-                            list[x].children.unshift(list[i])
+                            list[x].children.unshift(list[i]);
                         }
-                        break
+                        break;
                     }
                 }
             }
-            const l = []
+            const l = [];
             for (let i = 0; i < list.length; i++) {
                 if (list[i].menuSuperiorCode == null || list[i].menuSuperiorCode === '') {
-                    l.push(list[i])
+                    l.push(list[i]);
                 }
             }
-            return l
+            return l;
         },
         updateSort (row) {
-            const that = this
+            const that = this;
             that.axios.put('/admin/menu', {
                 menuUuid: row.menuUuid,
                 menuSort: row.menuSort
             }).then(r => {
-                that.$message.success('更新排序号成功')
-            })
+                that.$message.success('更新排序号成功');
+            });
         }
     },
     components: {
         iconfont
     }
-}
+};
 </script>
 
 <style scoped>

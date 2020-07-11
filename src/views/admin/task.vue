@@ -129,81 +129,81 @@ export default {
             formDialogVisible: false,
             isInsert: true,
             loading: true
-        }
+        };
     },
     created: function () {
-        this.select()
+        this.select();
     },
     methods: {
         select () {
-            const that = this
-            that.taskForm = []
+            const that = this;
+            that.taskForm = [];
             this.axios.get('/admin/task')
                 .then(r => {
                     if (r.code === 0) {
-                        that.taskList = r.data
-                        that.loading = false
+                        that.taskList = r.data;
+                        that.loading = false;
                     } else {
-                        that.$message.error(r.msg)
+                        that.$message.error(r.msg);
                     }
-                })
+                });
         },
         save () {
-            const that = this
+            const that = this;
             if (that.isInsert) {
                 this.axios.post('/admin/task', that.taskForm)
                     .then(r => {
                         if (r.code === 0) {
-                            that.select()
-                            that.$message.success('保存成功')
-                            that.formDialogVisible = false
+                            that.select();
+                            that.$message.success('保存成功');
+                            that.formDialogVisible = false;
                         } else {
-                            that.$message.error(r.msg)
+                            that.$message.error(r.msg);
                         }
-                    })
+                    });
             } else {
                 this.axios.put('/admin/task', that.taskForm)
                     .then(r => {
                         if (r.code === 0) {
-                            that.select()
-                            that.$message.success('保存成功')
-                            that.formDialogVisible = false
+                            that.select();
+                            that.$message.success('保存成功');
+                            that.formDialogVisible = false;
                         } else {
-                            that.$message.error(r.msg)
+                            that.$message.error(r.msg);
                         }
-                    })
+                    });
             }
         },
         openAdd () {
-            this.isInsert = true
+            this.isInsert = true;
             this.taskForm = {
                 taskName: '',
                 taskCorn: '',
                 taskClass: '',
                 taskParameter: '',
                 taskStatus: '0'
-            }
-            this.formDialogVisible = true
+            };
+            this.formDialogVisible = true;
         },
         openEdit (index, row) {
-            this.taskForm = JSON.parse(JSON.stringify(row))
-            this.taskForm.taskStatus = row.taskStatus + ''
-            this.formDialogVisible = true
+            this.taskForm = JSON.parse(JSON.stringify(row));
+            this.taskForm.taskStatus = row.taskStatus + '';
+            this.formDialogVisible = true;
         },
         deleteTask (index, row) {
-            const that = this
+            const that = this;
             this.axios.delete('/admin/task', row)
                 .then(r => {
                     if (r.code === 0) {
-                        that.select()
-                        that.$message.success('删除成功')
+                        that.select();
+                        that.$message.success('删除成功');
                     } else {
-                        that.$message.error(r.msg)
+                        that.$message.error(r.msg);
                     }
-                })
+                });
         }
     }
-}
+};
 </script>
 
 <style scoped>

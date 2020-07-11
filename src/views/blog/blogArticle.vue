@@ -39,16 +39,16 @@ export default {
     data () {
         return {
             articleList: []
-        }
+        };
     },
     created () {
-        const that = this
+        const that = this;
         that.axios.get('/blog/article')
             .then(r => {
-                that.articleList = r.data
-            })
+                that.articleList = r.data;
+            });
     }
-}
+};
 </script>
 
 <style scoped>

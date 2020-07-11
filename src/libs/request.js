@@ -4,9 +4,9 @@ import router from '../router';
 
 axios.defaults.baseURL = window.hkConfig.baseUrl;
 axios.defaults.withCredentials = true;
-//全局拦截器
+// 全局拦截器
 const service = axios.create({
-    withCredentials:true, // 请求时带上cookie
+    withCredentials: true // 请求时带上cookie
     // timeout: 5000
 });
 // 添加请求拦截器
@@ -26,26 +26,38 @@ service.interceptors.response.use(
     response => {
         // 响应数据
         if (response.status === 200) {
-            if(response.data.code === 0){
+            if (response.data.code === 0) {
                 return response.data;
-            }else if(response.data.code === 1){
-                window.vue.$message.error("获取数据失败\n"+ response.data.msg);
+            } else if (response.data.code === 1) {
+                window.vue.$message.error('获取数据失败\n' + response.data.msg);
                 return Promise.reject(response);
             }
-        }else {
+        } else {
             return Promise.reject();
         }
     },
     error => {
         // 响应错误
         // console.log(error)
-        if(error.toString().indexOf('Request failed with status code 401') !== -1){
-            window.vue.$message.error("请重新登录！");
-            router.push('/login');
-        }else if(error.toString().indexOf('Request failed with status code 403') !== -1){
-            window.vue.$message.error("没有访问权限");
-        }else{
-            window.vue.$message.error("请求服务器时出错\n"+error);
+        if (error.toString().indexOf('Request failed with status code 401') !== -1) {
+            // window.vue.$message.error('请重新登录！');
+            // router.push('/login');
+            window.vue.$confirm('登录超时，需要重新登录，是否立即跳转登录页?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                router.push('/login');
+            }).catch(() => {
+                window.vue.$message({
+                    type: 'info',
+                    message: '请及时重新登录'
+                });
+            });
+        } else if (error.toString().indexOf('Request failed with status code 403') !== -1) {
+            window.vue.$message.error('没有访问权限');
+        } else {
+            window.vue.$message.error('请求服务器时出错\n' + error);
         }
         return Promise.reject(error);
     }

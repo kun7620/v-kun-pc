@@ -55,47 +55,47 @@ export default {
             rightList: [],
             rightModuleNameFilters: [],
             loading: true
-        }
+        };
     },
     created () {
-        const that = this
+        const that = this;
         that.axios.get('/admin/right')
             .then(r => {
-                that.rightList = r.data
+                that.rightList = r.data;
                 // 设置模块名称筛选条件
-                const rightModuleNameFilters_1 = {}
+                const rightModuleNameFilters_1 = {};
                 for (const item of r.data) {
-                    rightModuleNameFilters_1[item.rightModuleName] = ''
+                    rightModuleNameFilters_1[item.rightModuleName] = '';
                 }
-                const rightModuleNameFilters_list = Object.keys(rightModuleNameFilters_1)
+                const rightModuleNameFilters_list = Object.keys(rightModuleNameFilters_1);
                 for (const ieme of rightModuleNameFilters_list) {
-                    that.rightModuleNameFilters.push({ text: ieme, value: ieme })
+                    that.rightModuleNameFilters.push({ text: ieme, value: ieme });
                 }
-                that.loading = false
-            })
+                that.loading = false;
+            });
     },
     methods: {
         tableMethodClassName ({ row, rowIndex }) {
             switch (row.rightMethod) {
             case 'get':
-                return 'primary'
+                return 'primary';
             case 'post':
-                return 'success'
+                return 'success';
             case 'put':
-                return 'warning'
+                return 'warning';
             case 'delete':
-                return 'danger'
+                return 'danger';
             default:
-                return ''
+                return '';
             }
         },
         // 模块名称筛选方法
         rightModuleNameFiltersMethod (value, row, column) {
-            const property = column.property
-            return row[property] === value
+            const property = column.property;
+            return row[property] === value;
         }
     }
-}
+};
 </script>
 
 <style scoped>
