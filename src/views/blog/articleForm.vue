@@ -1,5 +1,8 @@
 <template>
     <d2-container class="articleForm">
+        <template slot="header">
+            <el-button type="primary" @click="submit">提交</el-button>
+        </template>
         <el-form ref="blogArticle" :model="blogArticle" label-width="80px">
             <el-form-item label="文章名称">
                 <el-input v-model="blogArticle.articleName"></el-input>
@@ -13,15 +16,13 @@
             <el-form-item label="内容">
                 <ueditor ref="ueditor" height="400" :initContent="blogArticle.articleContent"></ueditor>
             </el-form-item>
-            <el-row>
-                <el-button type="primary" @click="submit">提交</el-button>
-            </el-row>
         </el-form>
     </d2-container>
 </template>
 
 <script>
 import ueditor from '../admin/ueditor';
+
 export default {
     name: 'articleForm',
     components: { ueditor },
@@ -61,10 +62,12 @@ export default {
 };
 </script>
 
-<style scoped>
-    .articleForm{
-        background-color: white;
+<style lang="scss" scoped>
+    .articleForm {
         padding: 10px;
         border-radius: 5px;
+    }
+    .articleForm /deep/ .el-form-item__label {
+        color: white;
     }
 </style>
