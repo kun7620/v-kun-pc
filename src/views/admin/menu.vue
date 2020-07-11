@@ -71,7 +71,6 @@
       </el-table-column>
     </el-table>
 
-
     <el-dialog
       title="用户"
       :visible.sync="formDialogVisible"
@@ -114,241 +113,239 @@
       <el-button type="primary" @click="save" style="display: block;margin: 0 auto">保存</el-button>
     </el-dialog>
 
-
   </d2-container>
 </template>
 
 <script>
-  import iconfont from './iconfont';
+import iconfont from './iconfont'
 
-  export default {
+export default {
     name: 'menu_',
     data: function () {
-      return {
-        data: null
-        , defaultProps: {
-          children: 'children',
-          label: 'menuTitle'
+        return {
+            data: null,
+            defaultProps: {
+                children: 'children',
+                label: 'menuTitle'
+            },
+            formDialogVisible: false,
+            iconVisible: false,
+            isSV: '0', // 0新增操作，1修改操作
+            menuForm: {
+                menuTitle: '',
+                menuPath: '',
+                menuIco: '',
+                menuOpenWay: '1',
+                menuSort: 0
+            },
+            rules: {
+                menuTitle: [
+                    { required: true, message: '请输入菜单名称', trigger: 'blur' },
+                    { min: 2, max: 200, message: '长度在 2 到 6 个字符', trigger: 'blur' }
+                ]
+            },
+            visibleIcon: false,
+            showTree: false
         }
-        , formDialogVisible: false
-        , iconVisible: false
-        , isSV: '0' // 0新增操作，1修改操作
-        , menuForm: {
-          menuTitle: ''
-          , menuPath: ''
-          , menuIco: ''
-          , menuOpenWay: '1'
-          , menuSort: 0
-        }
-        , rules: {
-          menuTitle: [
-            {required: true, message: '请输入菜单名称', trigger: 'blur'},
-            {min: 2, max: 200, message: '长度在 2 到 6 个字符', trigger: 'blur'}
-          ]
+    },
+    created: function () {
+        this.getMenulist(this)
+    },
+    methods: {
+        setClass (name) {
+            this.menuForm.menuIco = 'iconfont ' + name
+            this.visibleIcon = false
         },
-        visibleIcon: false,
-        showTree: false
-      };
-    }
-    , created: function () {
-      this.getMenulist(this);
-    }
-    , methods: {
-      setClass(name) {
-        this.menuForm.menuIco = 'iconfont ' + name;
-        this.visibleIcon = false;
-      },
-      edit(data) {
-        this.menuForm.menuTitle = data.menuTitle;
-        this.menuForm.menuPath = data.menuPath;
-        this.menuForm.menuIco = data.menuIco;
-        this.menuForm.menuOpenWay = data.menuOpenWay;
-        this.menuForm.menuSuperiorCode = data.menuCode;
-        this.menuForm.menuUuid = data.menuUuid;
-        this.menuForm.menuSort = data.menuSort;
-        this.formDialogVisible = true;
-        this.isSV = '1';
-      },
-      append(data) {
-        let that = this;
-        that.formDialogVisible = true;
-        this.menuForm.menuTitle = '';
-        this.menuForm.menuPath = '';
-        this.menuForm.menuIco = '';
-        this.menuForm.menuOpenWay = '';
-        this.menuForm.menuSuperiorCode = data == null ? '' : data.menuCode;
-        this.menuForm.menuUuid = '';
-        that.isSV = '0';
-      },
+        edit (data) {
+            this.menuForm.menuTitle = data.menuTitle
+            this.menuForm.menuPath = data.menuPath
+            this.menuForm.menuIco = data.menuIco
+            this.menuForm.menuOpenWay = data.menuOpenWay
+            this.menuForm.menuSuperiorCode = data.menuCode
+            this.menuForm.menuUuid = data.menuUuid
+            this.menuForm.menuSort = data.menuSort
+            this.formDialogVisible = true
+            this.isSV = '1'
+        },
+        append (data) {
+            const that = this
+            that.formDialogVisible = true
+            this.menuForm.menuTitle = ''
+            this.menuForm.menuPath = ''
+            this.menuForm.menuIco = ''
+            this.menuForm.menuOpenWay = ''
+            this.menuForm.menuSuperiorCode = data == null ? '' : data.menuCode
+            this.menuForm.menuUuid = ''
+            that.isSV = '0'
+        },
 
-      remove(data) {
-        let that = this;
-        this.$confirm('此操作将删除该数据, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          that.axios.delete('/admin/menu?menuCode=' + data.menuCode, {'menuCode': data.menuCode})
-            .then(r => {
-              if (r.code === 0) {
-                that.getMenulist(that);
-                that.$message({
-                  message: '操作成功',
-                  type: 'success'
-                });
-              } else {
-                that.$alert(r.msg, '操作失败', {
-                  confirmButtonText: '确定',
-                  callback: action => {
-                  }
-                });
-              }
-            });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });
-        });
-
-      },
-      save() {
-        let that = this;
-        let da = {
-          'menuTitle': that.menuForm.menuTitle
-          , 'menuPath': that.menuForm.menuPath
-          , 'menuIco': that.menuForm.menuIco
-          , 'menuOpenWay': that.menuForm.menuOpenWay
-        };
-        if (that.isSV === '1') { // 如果是修改操作需要带上uuid
-          da['menuUuid'] = that.menuForm.menuUuid;
-          this.axios.put('/admin/menu', da)
-            .then(r => {
-              if (r.code === 0) {
-                that.getMenulist(that);
-                that.formDialogVisible = false;
-                that.$message({
-                  message: '操作成功',
-                  type: 'success'
-                });
-              } else {
-                that.$alert(r.msg, '操作失败', {
-                  confirmButtonText: '确定',
-                  callback: action => {
-                  }
-                });
-              }
-            });
-        } else if (that.isSV === '0') { // 如果是新增操作需要带上上级coed
-          da['menuSuperiorCode'] = that.menuForm.menuSuperiorCode;
-          this.axios.post('/admin/menu', da)
-            .then(r => {
-              if (r.code === 0) {
-                that.getMenulist(that);
-                that.formDialogVisible = false;
-                that.$message({
-                  message: '操作成功',
-                  type: 'success'
-                });
-              } else {
-                that.$alert(r.msg, '操作失败', {
-                  confirmButtonText: '确定',
-                  callback: action => {
-                  }
-                });
-              }
-            });
-        }
-      },
-      showIcons() {
-        let that = this;
-        that.iconVisible = true;
-        let l = document.getElementsByClassName('menu-popover-icon-list')[0].getElementsByTagName('li');
-        for (let i = 0; i < l.length; i++) {
-          l[i].onclick = function (r) {
-            that.menuForm.menuIco = r.target.className;
-            that.iconVisible = false;
-          };
-        }
-      }
-      , handleDragEnd(draggingNode, dropNode, dropType, ev) {
-        let that = this;
-        this.axios.post('/admin/menu/moveNode', {
-          draggingNodeCode: draggingNode.data.menuCode
-          , draggingNodeSuperiorCode: draggingNode.data.menuSuperiorCode
-          , draggingNodeCreate: draggingNode.data.menuCreate
-          , draggingNodeSort: draggingNode.data.menuSort
-          , dropNodeCode: dropNode.data.menuCode
-          , dropNodeSuperiorCode: dropNode.data.menuSuperiorCode
-          , dropNodeCreate: dropNode.data.menuCreate
-          , dropNodeSort: dropNode.data.menuSort
-          , dropType: dropType
-        }).then(r => {
-          if (r.code === 0) {
-            that.$message({
-              message: '操作成功',
-              type: 'success'
-            });
-            that.getMenulist(that);
-          } else {
-            that.$alert(r.msg, '操作失败', {
-              confirmButtonText: '确定',
-              callback: action => {
-              }
-            });
-          }
-        });
-      },
-      getMenulist: function () {
-        let that = this;
-        this.axios.get('/admin/menu')
-          .then(r => {
-            if (r.code === 0) {
-              that.data = JSON.parse(JSON.stringify(this.formattingMenuTree(r.data)));
-            } else {
-              that.$alert(r.msg, '获取列表失败', {
+        remove (data) {
+            const that = this
+            this.$confirm('此操作将删除该数据, 是否继续?', '提示', {
                 confirmButtonText: '确定',
-                callback: action => {
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                that.axios.delete('/admin/menu?menuCode=' + data.menuCode, { menuCode: data.menuCode })
+                    .then(r => {
+                        if (r.code === 0) {
+                            that.getMenulist(that)
+                            that.$message({
+                                message: '操作成功',
+                                type: 'success'
+                            })
+                        } else {
+                            that.$alert(r.msg, '操作失败', {
+                                confirmButtonText: '确定',
+                                callback: action => {
+                                }
+                            })
+                        }
+                    })
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                })
+            })
+        },
+        save () {
+            const that = this
+            const da = {
+                menuTitle: that.menuForm.menuTitle,
+                menuPath: that.menuForm.menuPath,
+                menuIco: that.menuForm.menuIco,
+                menuOpenWay: that.menuForm.menuOpenWay
+            }
+            if (that.isSV === '1') { // 如果是修改操作需要带上uuid
+                da.menuUuid = that.menuForm.menuUuid
+                this.axios.put('/admin/menu', da)
+                    .then(r => {
+                        if (r.code === 0) {
+                            that.getMenulist(that)
+                            that.formDialogVisible = false
+                            that.$message({
+                                message: '操作成功',
+                                type: 'success'
+                            })
+                        } else {
+                            that.$alert(r.msg, '操作失败', {
+                                confirmButtonText: '确定',
+                                callback: action => {
+                                }
+                            })
+                        }
+                    })
+            } else if (that.isSV === '0') { // 如果是新增操作需要带上上级coed
+                da.menuSuperiorCode = that.menuForm.menuSuperiorCode
+                this.axios.post('/admin/menu', da)
+                    .then(r => {
+                        if (r.code === 0) {
+                            that.getMenulist(that)
+                            that.formDialogVisible = false
+                            that.$message({
+                                message: '操作成功',
+                                type: 'success'
+                            })
+                        } else {
+                            that.$alert(r.msg, '操作失败', {
+                                confirmButtonText: '确定',
+                                callback: action => {
+                                }
+                            })
+                        }
+                    })
+            }
+        },
+        showIcons () {
+            const that = this
+            that.iconVisible = true
+            const l = document.getElementsByClassName('menu-popover-icon-list')[0].getElementsByTagName('li')
+            for (let i = 0; i < l.length; i++) {
+                l[i].onclick = function (r) {
+                    that.menuForm.menuIco = r.target.className
+                    that.iconVisible = false
                 }
-              });
             }
-          });
-      }
-      , formattingMenuTree: function (list) {
-        for (let i = list.length - 1; i >= 0; i--) {
-          for (let x = 0; x < list.length; x++) {
-            if (list[x].menuCode === list[i].menuSuperiorCode) {
-              if (list[x].children == null) {
-                list[x].children = [list[i]];
-              } else {
-                list[x].children.unshift(list[i]);
-              }
-              break;
+        },
+        handleDragEnd (draggingNode, dropNode, dropType, ev) {
+            const that = this
+            this.axios.post('/admin/menu/moveNode', {
+                draggingNodeCode: draggingNode.data.menuCode,
+                draggingNodeSuperiorCode: draggingNode.data.menuSuperiorCode,
+                draggingNodeCreate: draggingNode.data.menuCreate,
+                draggingNodeSort: draggingNode.data.menuSort,
+                dropNodeCode: dropNode.data.menuCode,
+                dropNodeSuperiorCode: dropNode.data.menuSuperiorCode,
+                dropNodeCreate: dropNode.data.menuCreate,
+                dropNodeSort: dropNode.data.menuSort,
+                dropType: dropType
+            }).then(r => {
+                if (r.code === 0) {
+                    that.$message({
+                        message: '操作成功',
+                        type: 'success'
+                    })
+                    that.getMenulist(that)
+                } else {
+                    that.$alert(r.msg, '操作失败', {
+                        confirmButtonText: '确定',
+                        callback: action => {
+                        }
+                    })
+                }
+            })
+        },
+        getMenulist: function () {
+            const that = this
+            this.axios.get('/admin/menu')
+                .then(r => {
+                    if (r.code === 0) {
+                        that.data = JSON.parse(JSON.stringify(this.formattingMenuTree(r.data)))
+                    } else {
+                        that.$alert(r.msg, '获取列表失败', {
+                            confirmButtonText: '确定',
+                            callback: action => {
+                            }
+                        })
+                    }
+                })
+        },
+        formattingMenuTree: function (list) {
+            for (let i = list.length - 1; i >= 0; i--) {
+                for (let x = 0; x < list.length; x++) {
+                    if (list[x].menuCode === list[i].menuSuperiorCode) {
+                        if (list[x].children == null) {
+                            list[x].children = [list[i]]
+                        } else {
+                            list[x].children.unshift(list[i])
+                        }
+                        break
+                    }
+                }
             }
-          }
+            const l = []
+            for (let i = 0; i < list.length; i++) {
+                if (list[i].menuSuperiorCode == null || list[i].menuSuperiorCode === '') {
+                    l.push(list[i])
+                }
+            }
+            return l
+        },
+        updateSort (row) {
+            const that = this
+            that.axios.put('/admin/menu', {
+                menuUuid: row.menuUuid,
+                menuSort: row.menuSort
+            }).then(r => {
+                that.$message.success('更新排序号成功')
+            })
         }
-        let l = [];
-        for (let i = 0; i < list.length; i++) {
-          if (list[i].menuSuperiorCode == null || list[i].menuSuperiorCode === '') {
-            l.push(list[i]);
-          }
-        }
-        return l;
-      },
-      updateSort(row) {
-        let that = this;
-        that.axios.put('/admin/menu',{
-          menuUuid:row.menuUuid,
-          menuSort:row.menuSort
-        }).then(r=>{
-          that.$message.success('更新排序号成功');
-        })
-      }
     },
     components: {
-      iconfont
+        iconfont
     }
-  };
+}
 </script>
 
 <style scoped>

@@ -48,54 +48,54 @@
 </template>
 
 <script>
-  export default {
+export default {
     name: 'right',
-    data() {
-      return {
-        rightList: [],
-        rightModuleNameFilters: [],
-        loading: true
-      }
+    data () {
+        return {
+            rightList: [],
+            rightModuleNameFilters: [],
+            loading: true
+        }
     },
-    created() {
-      let that = this;
-      that.axios.get('/admin/right')
-        .then(r => {
-          that.rightList = r.data;
-          // 设置模块名称筛选条件
-          let rightModuleNameFilters_1 = {};
-          for (let item of r.data) {
-            rightModuleNameFilters_1[item.rightModuleName] = '';
-          }
-          let rightModuleNameFilters_list = Object.keys(rightModuleNameFilters_1);
-          for (let ieme of rightModuleNameFilters_list) {
-            that.rightModuleNameFilters.push({text: ieme, value: ieme})
-          }
-          that.loading = false;
-        })
+    created () {
+        const that = this
+        that.axios.get('/admin/right')
+            .then(r => {
+                that.rightList = r.data
+                // 设置模块名称筛选条件
+                const rightModuleNameFilters_1 = {}
+                for (const item of r.data) {
+                    rightModuleNameFilters_1[item.rightModuleName] = ''
+                }
+                const rightModuleNameFilters_list = Object.keys(rightModuleNameFilters_1)
+                for (const ieme of rightModuleNameFilters_list) {
+                    that.rightModuleNameFilters.push({ text: ieme, value: ieme })
+                }
+                that.loading = false
+            })
     },
     methods: {
-      tableMethodClassName({row, rowIndex}) {
-        switch (row.rightMethod) {
-          case 'get':
-            return 'primary';
-          case 'post':
-            return 'success';
-          case 'put':
-            return 'warning';
-          case 'delete':
-            return 'danger';
-          default:
-            return '';
+        tableMethodClassName ({ row, rowIndex }) {
+            switch (row.rightMethod) {
+            case 'get':
+                return 'primary'
+            case 'post':
+                return 'success'
+            case 'put':
+                return 'warning'
+            case 'delete':
+                return 'danger'
+            default:
+                return ''
+            }
+        },
+        // 模块名称筛选方法
+        rightModuleNameFiltersMethod (value, row, column) {
+            const property = column.property
+            return row[property] === value
         }
-      },
-      // 模块名称筛选方法
-      rightModuleNameFiltersMethod(value, row, column) {
-        const property = column['property'];
-        return row[property] === value;
-      }
     }
-  };
+}
 </script>
 
 <style scoped>

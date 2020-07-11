@@ -34,21 +34,21 @@
 </template>
 
 <script>
-    export default {
-        name:'blogArticle',
-        data(){
-            return{
-                articleList:[]
-            }
-        },
-        created() {
-            let that = this;
-            that.axios.get('/blog/article')
-                .then(r=>{
-                    that.articleList = r.data;
-                })
+export default {
+    name: 'blogArticle',
+    data () {
+        return {
+            articleList: []
         }
-    };
+    },
+    created () {
+        const that = this
+        that.axios.get('/blog/article')
+            .then(r => {
+                that.articleList = r.data
+            })
+    }
+}
 </script>
 
 <style scoped>

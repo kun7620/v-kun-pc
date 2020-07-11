@@ -47,7 +47,6 @@
       </el-table-column>
     </el-table>
 
-
     <el-dialog
       title="用户"
       :visible.sync="formDialogVisible"
@@ -98,110 +97,113 @@
 </template>
 
 <script>
-  export default {
+export default {
     name: 'task',
     data: function () {
-      return {
-        taskList: []
-        , taskForm: {
-          taskName: ''
-          , taskCorn: ''
-          , taskClass: ''
-          , taskParameter: ''
-          , taskStatus: '0'
+        return {
+            taskList: [],
+            taskForm: {
+                taskName: '',
+                taskCorn: '',
+                taskClass: '',
+                taskParameter: '',
+                taskStatus: '0'
+            },
+            rules: {
+                taskName: [
+                    { required: true, message: '请输入任务名称', trigger: 'blur' },
+                    { min: 2, max: 20, message: '长度2-20个字符', trigger: 'blur' }
+                ],
+                taskCorn: [
+                    { required: true, message: '请输入cron表达式', trigger: 'blur' }
+                ],
+                taskClass: [
+                    { required: true, message: '请输入执行的类', trigger: 'blur' },
+                    { min: 2, max: 200, message: '长度2-200个字符', trigger: 'blur' }
+                ],
+                taskParameter: [
+                    { required: false, message: '请输入参数', trigger: 'blur' },
+                    { min: 2, max: 50, message: '长度2-500个字符', trigger: 'blur' }
+                ]
+            },
+            formDialogVisible: false,
+            isInsert: true,
+            loading: true
         }
-        , rules: {
-          taskName: [
-            {required: true, message: '请输入任务名称', trigger: 'blur'},
-            {min: 2, max: 20, message: '长度2-20个字符', trigger: 'blur'}
-          ], taskCorn: [
-            {required: true, message: '请输入cron表达式', trigger: 'blur'}
-          ], taskClass: [
-            {required: true, message: '请输入执行的类', trigger: 'blur'},
-            {min: 2, max: 200, message: '长度2-200个字符', trigger: 'blur'}
-          ], taskParameter: [
-            {required: false, message: '请输入参数', trigger: 'blur'},
-            {min: 2, max: 50, message: '长度2-500个字符', trigger: 'blur'}
-          ]
-        }
-        , formDialogVisible: false
-        , isInsert: true,
-        loading: true
-      };
-    }
-    , created: function () {
-      this.select();
-    }
-    , methods: {
-      select() {
-        let that = this;
-        that.taskForm = [];
-        this.axios.get('/admin/task')
-          .then(r => {
-            if (r.code === 0) {
-              that.taskList = r.data;
-              that.loading = false;
+    },
+    created: function () {
+        this.select()
+    },
+    methods: {
+        select () {
+            const that = this
+            that.taskForm = []
+            this.axios.get('/admin/task')
+                .then(r => {
+                    if (r.code === 0) {
+                        that.taskList = r.data
+                        that.loading = false
+                    } else {
+                        that.$message.error(r.msg)
+                    }
+                })
+        },
+        save () {
+            const that = this
+            if (that.isInsert) {
+                this.axios.post('/admin/task', that.taskForm)
+                    .then(r => {
+                        if (r.code === 0) {
+                            that.select()
+                            that.$message.success('保存成功')
+                            that.formDialogVisible = false
+                        } else {
+                            that.$message.error(r.msg)
+                        }
+                    })
             } else {
-              that.$message.error(r.msg);
+                this.axios.put('/admin/task', that.taskForm)
+                    .then(r => {
+                        if (r.code === 0) {
+                            that.select()
+                            that.$message.success('保存成功')
+                            that.formDialogVisible = false
+                        } else {
+                            that.$message.error(r.msg)
+                        }
+                    })
             }
-          });
-      }
-      , save() {
-        let that = this;
-        if (that.isInsert) {
-          this.axios.post('/admin/task', that.taskForm)
-            .then(r => {
-              if (r.code === 0) {
-                that.select();
-                that.$message.success('保存成功');
-                that.formDialogVisible = false;
-              } else {
-                that.$message.error(r.msg);
-              }
-            });
-        } else {
-          this.axios.put('/admin/task', that.taskForm)
-            .then(r => {
-              if (r.code === 0) {
-                that.select();
-                that.$message.success('保存成功');
-                that.formDialogVisible = false;
-              } else {
-                that.$message.error(r.msg);
-              }
-            });
+        },
+        openAdd () {
+            this.isInsert = true
+            this.taskForm = {
+                taskName: '',
+                taskCorn: '',
+                taskClass: '',
+                taskParameter: '',
+                taskStatus: '0'
+            }
+            this.formDialogVisible = true
+        },
+        openEdit (index, row) {
+            this.taskForm = JSON.parse(JSON.stringify(row))
+            this.taskForm.taskStatus = row.taskStatus + ''
+            this.formDialogVisible = true
+        },
+        deleteTask (index, row) {
+            const that = this
+            this.axios.delete('/admin/task', row)
+                .then(r => {
+                    if (r.code === 0) {
+                        that.select()
+                        that.$message.success('删除成功')
+                    } else {
+                        that.$message.error(r.msg)
+                    }
+                })
         }
-      }
-      , openAdd() {
-        this.isInsert = true;
-        this.taskForm = {
-          taskName: ''
-          , taskCorn: ''
-          , taskClass: ''
-          , taskParameter: ''
-          , taskStatus: '0'
-        };
-        this.formDialogVisible = true;
-      }
-      , openEdit(index, row) {
-        this.taskForm = JSON.parse(JSON.stringify(row));
-        this.taskForm.taskStatus = row.taskStatus + '';
-        this.formDialogVisible = true;
-      }
-      , deleteTask(index, row) {
-        let that = this;
-        this.axios.delete('/admin/task', row)
-          .then(r => {
-            if (r.code === 0) {
-              that.select();
-              that.$message.success('删除成功');
-            } else {
-              that.$message.error(r.msg);
-            }
-          });
-      }
     }
-  };
+}
 </script>
 
 <style scoped>

@@ -22,47 +22,47 @@
 </template>
 
 <script>
-    import ueditor from '../admin/ueditor';
-    export default {
-        name:'articleForm',
-        components: { ueditor },
-        data(){
-            return{
+import ueditor from '../admin/ueditor'
+export default {
+    name: 'articleForm',
+    components: { ueditor },
+    data () {
+        return {
 
-                blogArticle:{
-                    articleName : '',
-                    articleIsPublic : false,
-                    articleIsEncryption: false,
-                    articleContent:'',
-                    articleAbstract : ''
-                }
+            blogArticle: {
+                articleName: '',
+                articleIsPublic: false,
+                articleIsEncryption: false,
+                articleContent: '',
+                articleAbstract: ''
             }
-        },
-        methods:{
-            submit(){
-                let that = this;
-                that.articleAbstract = '';
-                // 提取摘要
-                let plainTxt = this.$refs.ueditor.ue.getPlainTxt();
-                let split = plainTxt.split("\n");
-                for(let i=0;i<split.length && i < 5;i++){
-                    that.articleAbstract += split[i] + '<br\>';
-                }
-                that.axios.post('/blog/article',{
-                    articleName : that.blogArticle.articleName,
-                    articleIsPublic : that.blogArticle.articleIsPublic?'1':'0',
-                    articleIsEncryption: that.blogArticle.articleIsEncryption?'1':'0',
-                    articleContent:this.$refs.ueditor.getContent().replace(/&nbsp;/g,' ').replace(/<br\/>/g,'\n'),
-                    articleAbstract:that.articleAbstract
-                }).then(r=>{
-                    that.$message.success("操作成功");
-                })
-            },
-          test(){
-              console.log(this.$refs.ueditor.getContent())
-          }
         }
-    };
+    },
+    methods: {
+        submit () {
+            const that = this
+            that.articleAbstract = ''
+            // 提取摘要
+            const plainTxt = this.$refs.ueditor.ue.getPlainTxt()
+            const split = plainTxt.split('\n')
+            for (let i = 0; i < split.length && i < 5; i++) {
+                that.articleAbstract += split[i] + '<br\>'
+            }
+            that.axios.post('/blog/article', {
+                articleName: that.blogArticle.articleName,
+                articleIsPublic: that.blogArticle.articleIsPublic ? '1' : '0',
+                articleIsEncryption: that.blogArticle.articleIsEncryption ? '1' : '0',
+                articleContent: this.$refs.ueditor.getContent().replace(/&nbsp;/g, ' ').replace(/<br\/>/g, '\n'),
+                articleAbstract: that.articleAbstract
+            }).then(r => {
+                that.$message.success('操作成功')
+            })
+        },
+        test () {
+            console.log(this.$refs.ueditor.getContent())
+        }
+    }
+}
 </script>
 
 <style scoped>

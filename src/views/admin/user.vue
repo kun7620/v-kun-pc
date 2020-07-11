@@ -113,192 +113,191 @@
 </template>
 
 <script>
-  export default {
+export default {
     // inject: ['reload'],
     name: 'user',
     data: function () {
-      return {
-        userList: [],
-        formDialogVisible: false,
-        uploadUrl: window.hkConfig.uploadFile,
-        coreUser: {
-          userUuid: '',
-          userSort: '',
-          userCdate: '',
-          userUdate: '',
-          userStatus: '',
-          userPhone: '',
-          userPassword: '',
-          userNickname: '',
-          userHeadPortrait: '',
-          roleUuid: [],
-          roleName: []
-        },
-        rules: {
-          userPhone: [
-            {required: true, message: '请输入手机号', trigger: 'blur'},
-            {min: 11, max: 11, message: '请输入正确的手机号', trigger: 'blur'}
-          ]
-        },
-        roles: [],
-        isInsert: false, // 判断是新增还是修改 true 新增
-        loading: true
+        return {
+            userList: [],
+            formDialogVisible: false,
+            uploadUrl: window.hkConfig.uploadFile,
+            coreUser: {
+                userUuid: '',
+                userSort: '',
+                userCdate: '',
+                userUdate: '',
+                userStatus: '',
+                userPhone: '',
+                userPassword: '',
+                userNickname: '',
+                userHeadPortrait: '',
+                roleUuid: [],
+                roleName: []
+            },
+            rules: {
+                userPhone: [
+                    { required: true, message: '请输入手机号', trigger: 'blur' },
+                    { min: 11, max: 11, message: '请输入正确的手机号', trigger: 'blur' }
+                ]
+            },
+            roles: [],
+            isInsert: false, // 判断是新增还是修改 true 新增
+            loading: true
         // ,ossHost:ossHost
-      }
+        }
     },
     created: function () {
-      const that = this
-      // 查询用户
-      this.axios.get('/admin/user/userAndRole?userStatus=0')
-        .then(r => {
-          for (let i = 0; i < r.data.length; i++) {
-            r.data[i].roleUuid = r.data[i].roleUuid ? r.data[i].roleUuid.split(',') : []
-            r.data[i].roleName = r.data[i].roleName ? r.data[i].roleName.split(',') : []
-          }
-          that.userList = r.data;
-          that.loading = false;
-        });
-      // 查询角色
-      that.axios.get('/admin/role')
-        .then(r => {
-          if (r.code === 0) {
-            that.roles = r.data
-          } else {
-            that.$message.error('获取角色信息失败')
-          }
-        })
+        const that = this
+        // 查询用户
+        this.axios.get('/admin/user/userAndRole?userStatus=0')
+            .then(r => {
+                for (let i = 0; i < r.data.length; i++) {
+                    r.data[i].roleUuid = r.data[i].roleUuid ? r.data[i].roleUuid.split(',') : []
+                    r.data[i].roleName = r.data[i].roleName ? r.data[i].roleName.split(',') : []
+                }
+                that.userList = r.data
+                that.loading = false
+            })
+        // 查询角色
+        that.axios.get('/admin/role')
+            .then(r => {
+                if (r.code === 0) {
+                    that.roles = r.data
+                } else {
+                    that.$message.error('获取角色信息失败')
+                }
+            })
     },
     methods: {
-      toForm: function (r) {
-        const that = this
-        this.formDialogVisible = true
-        setTimeout(function () {
-          that.$refs.coreUser.resetFields()
-        }, 100)
-        that.isInsert = true
-      },
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
+        toForm: function (r) {
             const that = this
-            // 判断是新增还是修改
-            if (that.isInsert) {
-              this.axios.post('/admin/user', {
-                userPhone: that.coreUser.userPhone,
-                userPassword: that.coreUser.userPassword,
-                userNickname: that.coreUser.userNickname,
-                userHeadPortrait: that.coreUser.userHeadPortrait,
-                userStatus: '0',
-                roleUuid: JSON.parse(JSON.stringify(that.coreUser.roleUuid)).toString()
-              }).then(r => {
-                that.formDialogVisible = false
-                if (r.code === 0) {
-                  that.$message.success('操作成功')
-                } else {
-                  that.$alert(r.msg, '操作失败', {
-                    confirmButtonText: '确定',
-                    callback: action => {
+            this.formDialogVisible = true
+            setTimeout(function () {
+                that.$refs.coreUser.resetFields()
+            }, 100)
+            that.isInsert = true
+        },
+        submitForm (formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    const that = this
+                    // 判断是新增还是修改
+                    if (that.isInsert) {
+                        this.axios.post('/admin/user', {
+                            userPhone: that.coreUser.userPhone,
+                            userPassword: that.coreUser.userPassword,
+                            userNickname: that.coreUser.userNickname,
+                            userHeadPortrait: that.coreUser.userHeadPortrait,
+                            userStatus: '0',
+                            roleUuid: JSON.parse(JSON.stringify(that.coreUser.roleUuid)).toString()
+                        }).then(r => {
+                            that.formDialogVisible = false
+                            if (r.code === 0) {
+                                that.$message.success('操作成功')
+                            } else {
+                                that.$alert(r.msg, '操作失败', {
+                                    confirmButtonText: '确定',
+                                    callback: action => {
+                                    }
+                                })
+                            }
+                        })
+                    } else {
+                        that.coreUser.roleUuid = that.coreUser.roleUuid.join(',')
+                        // that.coreUser.roleName = that.coreUser.roleName.join(',');
+                        // 更新数据
+                        // that.roleUuid =  that.coreUser.roleUuid.toString();
+                        console.log(that)
+                        this.axios.put('/admin/user', that.coreUser)
+                            .then(r => {
+                                that.formDialogVisible = false
+                                if (r.code === 0) {
+                                    that.$message.success('操作成功')
+                                    // that.reload(this.$route.fullPath)
+                                } else {
+                                    that.$alert(r.msg, '操作失败', {
+                                        confirmButtonText: '确定',
+                                        callback: action => {
+                                        }
+                                    })
+                                }
+                            })
                     }
-                  })
                 }
-              })
-            } else {
-              that.coreUser.roleUuid = that.coreUser.roleUuid.join(',')
-              // that.coreUser.roleName = that.coreUser.roleName.join(',');
-              // 更新数据
-              // that.roleUuid =  that.coreUser.roleUuid.toString();
-              console.log(that)
-              this.axios.put('/admin/user', that.coreUser)
-                .then(r => {
-                  that.formDialogVisible = false
-                  if (r.code === 0) {
-                    that.$message.success('操作成功')
-                    // that.reload(this.$route.fullPath)
-
-                  } else {
-                    that.$alert(r.msg, '操作失败', {
-                      confirmButtonText: '确定',
-                      callback: action => {
-                      }
-                    })
-                  }
-                })
-            }
-          }
-        })
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields()
-      },
-      handleEdit(index, row) {
-        this.formDialogVisible = true
-        // this.coreUser = row;
-        this.coreUser.userUuid = row.userUuid
-        this.coreUser.userPhone = row.userPhone
-        this.coreUser.userPassword = row.userPassword
-        this.coreUser.userNickname = row.userNickname
-        this.coreUser.userHeadPortrait = row.userHeadPortrait
-        this.coreUser.roleUuid = row.roleUuid
-        this.isInsert = false // 修改
-      },
-      handleDelete(index, row) {
-        const that = this
-        this.$confirm('此操作将删除数据, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.axios.put('/admin/user', {
-            userUuid: row.userUuid,
-            userStatus: '2'
-          }).then(r => {
-            if (r.code === 0) {
-              that.$message.success('操作成功')
-              // reloadCurrentModule();
-            } else {
-              that.$alert(r.msg, '操作失败', {
+            })
+        },
+        resetForm (formName) {
+            this.$refs[formName].resetFields()
+        },
+        handleEdit (index, row) {
+            this.formDialogVisible = true
+            // this.coreUser = row;
+            this.coreUser.userUuid = row.userUuid
+            this.coreUser.userPhone = row.userPhone
+            this.coreUser.userPassword = row.userPassword
+            this.coreUser.userNickname = row.userNickname
+            this.coreUser.userHeadPortrait = row.userHeadPortrait
+            this.coreUser.roleUuid = row.roleUuid
+            this.isInsert = false // 修改
+        },
+        handleDelete (index, row) {
+            const that = this
+            this.$confirm('此操作将删除数据, 是否继续?', '提示', {
                 confirmButtonText: '确定',
-                callback: action => {
-                }
-              })
-            }
-          })
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          })
-        })
-      },
-      handleAvatarSuccess(res, file) {
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.axios.put('/admin/user', {
+                    userUuid: row.userUuid,
+                    userStatus: '2'
+                }).then(r => {
+                    if (r.code === 0) {
+                        that.$message.success('操作成功')
+                        // reloadCurrentModule();
+                    } else {
+                        that.$alert(r.msg, '操作失败', {
+                            confirmButtonText: '确定',
+                            callback: action => {
+                            }
+                        })
+                    }
+                })
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                })
+            })
+        },
+        handleAvatarSuccess (res, file) {
         // console.log(res)
         // console.log(file)
         // this.imageUrl = URL.createObjectURL(file.raw);
-        this.coreUser.userHeadPortrait = res.url;
-      },
-      beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
+            this.coreUser.userHeadPortrait = res.url
+        },
+        beforeAvatarUpload (file) {
+            const isJPG = file.type === 'image/jpeg'
+            const isLt2M = file.size / 1024 / 1024 < 2
 
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
+            if (!isJPG) {
+                this.$message.error('上传头像图片只能是 JPG 格式!')
+            }
+            if (!isLt2M) {
+                this.$message.error('上传头像图片大小不能超过 2MB!')
+            }
+            return isJPG && isLt2M
+        },
+        updateSort (row) {
+            const that = this
+            that.axios.put('/admin/user', {
+                userUuid: row.userUuid,
+                userSort: row.userSort
+            }).then(r => {
+                that.$message.success('更新排序号成功')
+            })
         }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-        }
-        return isJPG && isLt2M;
-      },
-      updateSort(row) {
-        let that = this;
-        that.axios.put('/admin/user',{
-          userUuid:row.userUuid,
-          userSort:row.userSort
-        }).then(r=>{
-          that.$message.success('更新排序号成功');
-        })
-      }
     }
-  }
+}
 </script>
 
 <style scoped>
