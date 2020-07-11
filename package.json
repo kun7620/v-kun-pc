@@ -28,6 +28,7 @@
     "lodash": "^4.17.15",
     "lowdb": "^1.0.0",
     "marked": "^1.1.0",
+    "mavon-editor": "^2.9.0",
     "nprogress": "^0.2.0",
     "screenfull": "^5.0.2",
     "sortablejs": "^1.10.1",
