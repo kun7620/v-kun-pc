@@ -1,5 +1,5 @@
 <template>
-  <d2-container id="menu_" class="menu_manage">
+  <container id="menu_" class="menu_manage">
     <template slot="header">
       <el-button type="primary" @click="append">添加根节点</el-button>
       <el-button type="primary" @click="showTree=!showTree">切换显示</el-button>
@@ -113,7 +113,7 @@
       <el-button type="primary" @click="save" style="display: block;margin: 0 auto">保存</el-button>
     </el-dialog>
 
-  </d2-container>
+  </container>
 </template>
 
 <script>

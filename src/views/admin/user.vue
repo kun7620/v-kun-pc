@@ -1,5 +1,5 @@
 <template>
-  <d2-container id="userList">
+  <container id="userList">
     <template slot="header">
       <el-button type="primary" @click="toForm(1)">新增</el-button>
     </template>
@@ -109,7 +109,7 @@
       </el-form>
       <el-button type="primary" style="margin:auto;display:block;" @click="submitForm('coreUser')">保存</el-button>
     </el-dialog>
-  </d2-container>
+  </container>
 </template>
 
 <script>

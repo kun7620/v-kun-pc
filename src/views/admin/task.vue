@@ -1,5 +1,5 @@
 <template>
-  <d2-container id="task">
+  <container id="task">
     <template slot="header">
       <el-button type="primary" @click="openAdd">新增</el-button>
     </template>
@@ -93,7 +93,7 @@
       </el-form>
       <el-button type="primary" style="margin:auto;display:block;" @click="save">保存</el-button>
     </el-dialog>
-  </d2-container>
+  </container>
 </template>
 
 <script>

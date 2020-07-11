@@ -1,5 +1,5 @@
 <template>
-  <d2-container>
+  <container>
     <template slot="header">基础表格</template>
 <!--    <d2-crud-->
 <!--            ref="d2Crud"-->
@@ -11,7 +11,7 @@
     <el-card shadow="never" class="d2-mb">
       <d2-highlight :code="code"></d2-highlight>
     </el-card>
-  </d2-container>
+  </container>
 </template>
 
 <script>

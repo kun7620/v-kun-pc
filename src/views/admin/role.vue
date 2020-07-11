@@ -1,5 +1,5 @@
 <template>
-  <d2-container>
+  <container>
     <template slot="header">
       <el-button type="primary" @click="openAdd">新增角色</el-button>
     </template>
@@ -99,7 +99,7 @@
         <el-button type="primary" @click="isAdd?saveRole():updateRole()">提交</el-button>
       </el-form>
     </el-dialog>
-  </d2-container>
+  </container>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <d2-container class="page">
+  <container class="page">
     <el-col :span="8">
       <div class="user">
         <div class="user-info">
@@ -133,7 +133,7 @@
         </el-table-column>
       </el-table>
     </el-col>
-  </d2-container>
+  </container>
 </template>
 
 <script>

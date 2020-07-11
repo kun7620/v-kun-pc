@@ -1,5 +1,5 @@
 <template>
-  <d2-container>
+  <container>
     <el-table
       :data="rightList"
       v-loading="loading"
@@ -44,7 +44,7 @@
         label="描述">
       </el-table-column>
     </el-table>
-  </d2-container>
+  </container>
 </template>
 
 <script>

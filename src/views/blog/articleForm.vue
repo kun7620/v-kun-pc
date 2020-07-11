@@ -1,5 +1,5 @@
 <template>
-    <d2-container class="articleForm">
+    <container class="articleForm">
         <template slot="header">
             <el-button type="primary" @click="submit">提交</el-button>
         </template>
@@ -17,7 +17,7 @@
                 <ueditor ref="ueditor" height="400" :initContent="blogArticle.articleContent"></ueditor>
             </el-form-item>
         </el-form>
-    </d2-container>
+    </container>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <d2-container>
+  <container>
     <el-table
       :data="log"
       size="mini"
@@ -65,7 +65,7 @@
       <d2-icon name="cloud-upload"/>
       Upload {{log.length}} log data
     </el-button>
-  </d2-container>
+  </container>
 </template>
 
 <script>

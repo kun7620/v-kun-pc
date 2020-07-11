@@ -1,5 +1,5 @@
 <template>
-  <d2-container>
+  <container>
     <el-table
       :data="tableData"
       style="width: 100%">
@@ -18,7 +18,7 @@
         label="地址">
       </el-table-column>
     </el-table>
-  </d2-container>
+  </container>
 </template>
 
 <script>

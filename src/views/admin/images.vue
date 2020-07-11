@@ -1,12 +1,12 @@
 <template>
-  <d2-container class="images">
+  <container class="images">
     <el-image
 
       v-for="item in images"
       :src="item.download_url"
       :preview-src-list="item.srcList">
     </el-image>
-  </d2-container>
+  </container>
 </template>
 
 <script>
