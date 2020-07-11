@@ -34,99 +34,99 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-    export default {
-        data: function() {
-            return {
-                param: {
-                    userPhone: '',
-                    userPassword: '',
-                    isPwd: false
-                },
-                rules: {
-                    userPhone: [{ required: true, message: '请输入手机号', trigger: 'blur' }],
-                    userPassword: [{ required: true, message: '请输入密码', trigger: 'blur' }]
-                }
-            };
-        },
-        created: function() {
-            // if (this.hk.data('isPwd')) {
-            //     this.param.userPhone = this.hk.data('userPhone');
-            //     this.param.userPassword = this.hk.data('userPassword');
-            //     this.param.isPwd = this.hk.data('isPwd');
-            // }
-            let remember = this.hk.data('remember')['13296619668'];
-            if(remember!=null) {
-                this.param = remember;
+import { mapActions } from 'vuex';
+export default {
+    data: function () {
+        return {
+            param: {
+                userPhone: '',
+                userPassword: '',
+                isPwd: false
+            },
+            rules: {
+                userPhone: [{ required: true, message: '请输入手机号', trigger: 'blur' }],
+                userPassword: [{ required: true, message: '请输入密码', trigger: 'blur' }]
             }
-        },
-        methods: {
-          ...mapActions('d2admin/account', [
-            'login'
-          ]),
-            submitForm() {
-                const that = this;
-                this.$refs.login.validate((valid) => {
-                    if (valid) {
-                      that.login(that.param)
-                        // 发送 POST 请求
-                        // this.axios.post('/public/login', that.param)
-                        //     .then(function(r) {
-                        //         if(r.code === 0) {
-                        //             if (that.param.isPwd) {
-                        //                 that.hk.data('remember',{
-                        //                     key:that.param.userPhone,
-                        //                     value : that.param
-                        //                 });
-                        //             } else {
-                        //                 that.hk.data('remember',{
-                        //                     key:that.param.userPhone,
-                        //                     remove: true
-                        //                 });
-                        //             }
-                        //             for(let menu of r.data){
-                        //                 menu.icon = menu.menuIco;
-                        //                 menu.index = menu.menuPath===''||menu.menuPath ==null?that.hk.getUuid():menu.menuPath;
-                        //                 menu.title = menu.menuTitle;
-                        //             }
-                        //             console.log(r.data)
-                        //             // 存用户菜单
-                        //             that.hk.data('menu',{
-                        //                 'key':that.param.userPhone,
-                        //                 'value':that.hk.toTreeData(r.data,{
-                        //                             id: 'menuCode', // id字段名
-                        //                             parendId: 'menuSuperiorCode', // 父级id字段名
-                        //                             name: 'title', // 名称的字段名
-                        //                             rootId: '' // 顶层节点父级id
-                        //                     })
-                        //             });
-                        //             // 设置当前登录用户
-                        //             that.hk.data('activeUser',that.param)
-                        //             that.$router.push('/home');
-                        //         }
-                        //         if (r.code === 1) {
-                        //             that.$message.error(r.msg);
-                        //         }
-                        //     }).catch(function(e) {
-                        //     console.log(e);
-                        // });
-                    }
-                });
-
-                // this.$refs.login.validate(valid => {
-                //     if (valid) {
-                //         this.$message.success('登录成功');
-                //         localStorage.setItem('ms_userPhone', this.param.userPhone);
-                //         this.$router.push('/');
-                //     } else {
-                //         this.$message.error('请输入账号和密码');
-                //         console.log('error submit!!');
-                //         return false;
-                //     }
-                // });
-            }
+        };
+    },
+    created: function () {
+        // if (this.hk.data('isPwd')) {
+        //     this.param.userPhone = this.hk.data('userPhone');
+        //     this.param.userPassword = this.hk.data('userPassword');
+        //     this.param.isPwd = this.hk.data('isPwd');
+        // }
+        const remember = this.hk.data('remember')['13296619668'];
+        if (remember != null) {
+            this.param = remember;
         }
-    };
+    },
+    methods: {
+        ...mapActions('d2admin/account', [
+            'login'
+        ]),
+        submitForm () {
+            const that = this;
+            this.$refs.login.validate((valid) => {
+                if (valid) {
+                    that.login(that.param);
+                    // 发送 POST 请求
+                    // this.axios.post('/public/login', that.param)
+                    //     .then(function(r) {
+                    //         if(r.code === 0) {
+                    //             if (that.param.isPwd) {
+                    //                 that.hk.data('remember',{
+                    //                     key:that.param.userPhone,
+                    //                     value : that.param
+                    //                 });
+                    //             } else {
+                    //                 that.hk.data('remember',{
+                    //                     key:that.param.userPhone,
+                    //                     remove: true
+                    //                 });
+                    //             }
+                    //             for(let menu of r.data){
+                    //                 menu.icon = menu.menuIco;
+                    //                 menu.index = menu.menuPath===''||menu.menuPath ==null?that.hk.getUuid():menu.menuPath;
+                    //                 menu.title = menu.menuTitle;
+                    //             }
+                    //             console.log(r.data)
+                    //             // 存用户菜单
+                    //             that.hk.data('menu',{
+                    //                 'key':that.param.userPhone,
+                    //                 'value':that.hk.toTreeData(r.data,{
+                    //                             id: 'menuCode', // id字段名
+                    //                             parendId: 'menuSuperiorCode', // 父级id字段名
+                    //                             name: 'title', // 名称的字段名
+                    //                             rootId: '' // 顶层节点父级id
+                    //                     })
+                    //             });
+                    //             // 设置当前登录用户
+                    //             that.hk.data('activeUser',that.param)
+                    //             that.$router.push('/home');
+                    //         }
+                    //         if (r.code === 1) {
+                    //             that.$message.error(r.msg);
+                    //         }
+                    //     }).catch(function(e) {
+                    //     console.log(e);
+                    // });
+                }
+            });
+
+            // this.$refs.login.validate(valid => {
+            //     if (valid) {
+            //         this.$message.success('登录成功');
+            //         localStorage.setItem('ms_userPhone', this.param.userPhone);
+            //         this.$router.push('/');
+            //     } else {
+            //         this.$message.error('请输入账号和密码');
+            //         console.log('error submit!!');
+            //         return false;
+            //     }
+            // });
+        }
+    }
+};
 </script>
 
 <style scoped>
@@ -193,7 +193,6 @@
     .animated {
         animation-duration: 15s; /*动画时间*/
     }
-
 
     .up {
         animation-name: upAnimation; /*动画的名称*/
