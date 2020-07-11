@@ -13,7 +13,12 @@ const service = axios.create({
 service.interceptors.request.use(
     config => {
         // 在发送请求之前
-        config.data = Qs.stringify(config.data);
+        // 判断参数类型如果是FormData就不格式化
+        if (config.data instanceof FormData) {
+            config.headers['Content-Type'] = 'multipart/form-data;boundary=' + new Date().getTime();
+        }else{
+            config.data = Qs.stringify(config.data);
+        }
         return config;
     },
     error => {
@@ -24,6 +29,7 @@ service.interceptors.request.use(
 // 添加响应拦截器
 service.interceptors.response.use(
     response => {
+        console.log(response)
         // 响应数据
         if (response.status === 200) {
             if (response.data.code === 0) {
