@@ -67,7 +67,7 @@ export default {
         padding: 10px;
         border-radius: 5px;
     }
-    .articleForm /deep/ .el-form-item__label {
+    ::v-deep .el-form-item__label {
         color: white;
     }
 </style>
