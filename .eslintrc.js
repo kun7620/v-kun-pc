@@ -1,3 +1,4 @@
+// 具体配置：https://www.jianshu.com/p/29ca5a6a34fd
 module.exports = {
     root: true,
     env: {
