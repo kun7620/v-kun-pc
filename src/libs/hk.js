@@ -161,16 +161,12 @@ const hk = {
      */
     copy: function (text) {
         try {
-            let target = document.createElement('div');
-            target.innerText = text;
-            document.body.appendChild(target);
-            let range = document.createRange();
-            range.selectNode(target);
-            window.getSelection().removeAllRanges();
-            window.getSelection().addRange(range);
-            document.execCommand('copy');
-            window.getSelection().removeAllRanges();
-            target.parentElement.removeChild(target);
+            const input = document.createElement('textarea');
+            input.value = text;
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand('Copy');
+            document.body.removeChild(input);
             return true;
         } catch (e) {
             return false;
