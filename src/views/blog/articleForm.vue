@@ -1,5 +1,5 @@
 <template>
-    <div class="articleForm">
+    <d2-container class="articleForm">
         <el-form ref="blogArticle" :model="blogArticle" label-width="80px">
             <el-form-item label="文章名称">
                 <el-input v-model="blogArticle.articleName"></el-input>
@@ -15,9 +15,10 @@
             </el-form-item>
             <el-row>
                 <el-button type="primary" @click="submit">提交</el-button>
+                <el-button type="primary" @click="test">提交1</el-button>
             </el-row>
         </el-form>
-    </div>
+    </d2-container>
 </template>
 
 <script>
@@ -51,12 +52,15 @@
                     articleName : that.blogArticle.articleName,
                     articleIsPublic : that.blogArticle.articleIsPublic?'1':'0',
                     articleIsEncryption: that.blogArticle.articleIsEncryption?'1':'0',
-                    articleContent:this.$refs.ueditor.getContent(),
+                    articleContent:this.$refs.ueditor.getContent().replace(/&nbsp;/g,' ').replace(/<br\/>/g,'\n'),
                     articleAbstract:that.articleAbstract
                 }).then(r=>{
                     that.$message.success("操作成功");
                 })
-            }
+            },
+          test(){
+              console.log(this.$refs.ueditor.getContent())
+          }
         }
     };
 </script>

@@ -1,6 +1,6 @@
 window.hkConfig = {
-  baseUrl: 'http://admin.v-kun.com:7620',
-  // baseUrl: 'http://localhost:7620',
+  // baseUrl: 'http://admin.v-kun.com:7620',
+  baseUrl: 'http://localhost:7620',
   // 图标url
   iconfontUrl: 'http://at.alicdn.com/t/font_1902076_7rfoulygxhf.css',
   // ueditor 资源路径
