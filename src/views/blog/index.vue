@@ -37,10 +37,13 @@
                     <h2 class="title"><i class="iconfont iconback"
                                          @click="hideContent"></i><a>{{article.articleName}}</a></h2>
                     <div class="middle">
-                        <div class="articleAbstract articleContentDetails" :class="{'articleContentDetailsHide':articleContentDetailsHide}" v-html="article.articleContent"></div>
-                        <!--            <el-card shadow="never" class="d2-mb">-->
-                        <!--              <d2-highlight :code="article.articleContent"></d2-highlight>-->
-                        <!--            </el-card>-->
+<!--                        <div class="articleAbstract articleContentDetails" :class="{'articleContentDetailsHide':articleContentDetailsHide}" v-html="article.articleContent"></div>-->
+<!--                                    <el-card shadow="never" class="d2-mb">-->
+<!--                                      <d2-highlight :code="article.articleContent"></d2-highlight>-->
+<!--                                    </el-card>-->
+                        <el-card shadow="never" class="d2-mb">
+                            <d2-markdown :source="article.articleContent"/>
+                        </el-card>
                         <div class="tags">
                             <a class="tag" href="javascript:void(0)">java</a>
                             <a class="tag" href="javascript:void(0)">前端</a>

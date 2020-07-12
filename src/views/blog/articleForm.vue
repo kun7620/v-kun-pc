@@ -2,6 +2,8 @@
     <container class="articleForm">
         <template slot="header">
             <el-button type="primary" @click="submit">提交</el-button>
+            <el-button type="primary" @click="changeEdit">切换编辑器</el-button>
+            <el-button type="primary" @click="changeEdit1">切换编辑器</el-button>
         </template>
         <el-form ref="blogArticle" :model="blogArticle" label-width="80px">
             <el-form-item label="文章名称">
@@ -13,19 +15,21 @@
             <el-form-item label="是否加密">
                 <el-switch v-model="blogArticle.articleIsEncryption"></el-switch>
             </el-form-item>
-            <el-form-item label="内容">
-                <ueditor ref="ueditor" height="400" :initContent="blogArticle.articleContent"></ueditor>
-            </el-form-item>
+            <el-row>
+                <ueditor ref="ueditor" height="400" :initContent="blogArticle.articleContent" v-if="editType==='ueditor'"></ueditor>
+                <markdown ref="markdown" v-if="editType==='markdown'"/>
+            </el-row>
         </el-form>
     </container>
 </template>
 
 <script>
 import ueditor from '../admin/ueditor';
+import markdown from '../admin/markdown';
 
 export default {
     name: 'articleForm',
-    components: { ueditor },
+    components: { ueditor, markdown },
     data () {
         return {
 
@@ -35,7 +39,8 @@ export default {
                 articleIsEncryption: false,
                 articleContent: '',
                 articleAbstract: ''
-            }
+            },
+            editType: 'ueditor'
         };
     },
     methods: {
@@ -43,7 +48,14 @@ export default {
             const that = this;
             that.articleAbstract = '';
             // 提取摘要
-            const plainTxt = this.$refs.ueditor.ue.getPlainTxt();
+            let plainTxt = '';
+            if (that.editType === 'ueditor') {
+                plainTxt = this.$refs.ueditor.ue.getPlainTxt();
+                that.articleContent = this.$refs.ueditor.getContent().replace(/&nbsp;/g, ' ').replace(/<br\/>/g, '\n');
+            } else {
+                plainTxt = this.$refs.markdown.content;
+                that.articleContent = this.$refs.markdown.content;
+            }
             const split = plainTxt.split('\n');
             for (let i = 0; i < split.length && i < 5; i++) {
                 that.articleAbstract += split[i] + '<br\>';
@@ -52,11 +64,21 @@ export default {
                 articleName: that.blogArticle.articleName,
                 articleIsPublic: that.blogArticle.articleIsPublic ? '1' : '0',
                 articleIsEncryption: that.blogArticle.articleIsEncryption ? '1' : '0',
-                articleContent: this.$refs.ueditor.getContent().replace(/&nbsp;/g, ' ').replace(/<br\/>/g, '\n'),
+                articleContent: that.articleContent,
                 articleAbstract: that.articleAbstract
             }).then(r => {
                 that.$message.success('操作成功');
             });
+        },
+        changeEdit () {
+            if (this.editType === 'ueditor') {
+                this.editType = 'markdown';
+            } else {
+                this.editType = 'ueditor';
+            }
+        },
+        changeEdit1 () {
+            console.log(this.$refs.markdown.content);
         }
     }
 };

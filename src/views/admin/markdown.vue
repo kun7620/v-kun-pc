@@ -1,6 +1,6 @@
 <template>
     <div>
-        <mavon-editor v-model="content" ref="md" @imgAdd="$imgAdd" style="min-height: 600px"/>
+        <mavon-editor v-model="content" :shortCut="false" ref="md" @imgAdd="$imgAdd" @change="change"/>
     </div>
 </template>
 
@@ -30,6 +30,12 @@ export default {
                 }).catch(err => {
                     console.log(err);
                 });
+        },
+        change (value) {
+            this.hk.data('articleMarkdown', {
+                key: '1',
+                value: value
+            });
         }
     }
 };
