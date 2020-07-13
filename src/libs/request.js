@@ -35,7 +35,7 @@ service.interceptors.response.use(
             if (response.data.code === 0) {
                 return response.data;
             } else if (response.data.code === 1) {
-                window.vue.$message.error('获取数据失败\n' + response.data.msg);
+                window.vue.$message.error(response.data.msg);
                 return Promise.reject(response);
             }
         } else {
