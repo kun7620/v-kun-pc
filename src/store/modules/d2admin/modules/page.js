@@ -54,7 +54,7 @@ export default {
       state.opened = value
         .map(opened => {
           // 忽略首页
-          if (opened.fullPath === '/index') {
+          if (opened.fullPath === '/home') {
             valid.push(1)
             return opened
           }
