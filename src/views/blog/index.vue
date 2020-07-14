@@ -8,7 +8,7 @@
                 </a>
                 <h1 class="header-author">上善若水</h1>
                 <p class="header-subtitle">花花世界，何必当真</p>
-                <div class="search"><input type="text" placeholder="搜索文章"></div>
+                <div class="search"><input type="text" placeholder="搜索文章" class="searchInput"></div>
                 <div class="column"><a href="javascript:void(0)">所有文章</a><a href="javascript:void(0)">所有标签</a></div>
             </div>
             <div class="bottom">
@@ -37,10 +37,10 @@
                     <h2 class="title"><i class="iconfont iconback"
                                          @click="hideContent"></i><a>{{article.articleName}}</a></h2>
                     <div class="middle">
-                        <div class="articleAbstract articleContentDetails" :class="{'articleContentDetailsHide':articleContentDetailsHide}" v-html="article.articleContent"></div>
-<!--                        <el-card shadow="never" class="d2-mb articleContentDetails">-->
-<!--                            <d2-markdown :source="article.articleContent"/>-->
-<!--                        </el-card>-->
+                        <div class="articleAbstract articleContentDetails" :class="{'articleContentDetailsHide':articleContentDetailsHide}" v-html="article.articleContent" v-if="article.articleEditor==='ueditor'"></div>
+                        <el-card shadow="never" class="d2-mb articleContentDetails" v-if="article.articleEditor==='markdown'">
+                            <d2-markdown :source="article.articleContent"/>
+                        </el-card>
                         <div class="tags">
                             <a class="tag" href="javascript:void(0)">java</a>
                             <a class="tag" href="javascript:void(0)">前端</a>
@@ -65,7 +65,8 @@ export default {
             article: {
                 articleName: '',
                 articleCdate: '',
-                articleContent: ''
+                articleContent: '',
+                articleEditor: '',
             },
             isShowContent: false,
             showLeftSide: false,
@@ -79,23 +80,25 @@ export default {
         that.axios.get('/public/blog')
             .then(r => {
                 that.articleList = r.data;
+                loading.close();
             });
+        const loading = this.$loading({
+            lock: true,
+            text: 'Loading',
+            background: 'rgba(255, 255, 255, 0.7)'
+        });
     },
     methods: {
         showContent (item) {
+            const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                background: 'rgba(255, 255, 255, 0.7)'
+            });
             const that = this;
             that.axios.get('/public/blog/selectBlogArticleByUuid?articleUuid=' + item.articleUuid)
                 .then(r => {
                     that.article = r.data;
-                    // that.article.articleContent = r.data.articleContent.replace(/&nbsp;/g,' ');
-                    // that.article.articleContent = r.data.articleContent.replace(/<br\/>/g,'\n');
-                    // that.article.articleContent = r.data.articleContent.replace(/<\/p><p>/g,'\n');
-                    // that.article.articleContent = r.data.articleContent.replace(/&quot;/g,'"');
-                    // that.article.articleContent = r.data.articleContent.replace(/<\/p>/g,'');
-                    // that.article.articleContent = r.data.articleContent.replace(/<p>/g,'');
-                    // that.article.articleContent = r.data.articleContent.replace(/&gt;/g,'>');
-                    // that.article.articleContent = r.data.articleContent.replace(/&lt;/g,'<');
-                    // console.log(that.article.articleContent)
                     that.article.articleContent = r.data.articleContent.replace(/&nbsp;/g, ' ');
                     that.isShowContent = true;
 
@@ -116,7 +119,10 @@ export default {
                         for (let i = 0; i < pre.length; i++) {
                             const codes = pre[i].getElementsByTagName('code')[0];
                             // 获取换行数
-                            const hhNum = codes.innerHTML.split('\n').length;
+                            let hhNum = codes.innerHTML.split('\n').length;
+                            if(that.article.articleEditor==='markdown'){
+                                hhNum++;
+                            }
                             const dl = document.createElement('dl');
                             dl.className = 'myLine';
                             for (let x = 1; x < hhNum; x++) {
@@ -149,6 +155,7 @@ export default {
                             };
                         }
                         that.articleContentDetailsHide = false;
+                        loading.close();
                     }, 200);
                 });
         },
@@ -255,6 +262,35 @@ export default {
     .leftSide .intrude-less .search {
         margin-top: 20px;
     }
+
+    .leftSide .intrude-less .searchInput ,.leftSide .intrude-less .searchInput:focus{
+        border: none;
+        border-bottom: 1px solid #909399;
+        padding: 5px;
+        color: #909399;
+        outline: none;
+        text-align: center;
+        width: 100px;
+
+        animation: searchInputAnimation 1s;
+        -moz-animation: searchInputAnimation 1s; /* Firefox */
+        -webkit-animation: searchInputAnimation 1s; /* Safari and Chrome */
+        -o-animation: searchInputAnimation 1s; /* Opera */
+        animation-iteration-count: infinite;
+    }
+
+    @keyframes searchInputAnimation {
+        0% {
+            width: 100px;
+        }
+        50%{
+            width: 200px;
+        }
+        100%{
+            width: 100px;
+        }
+    }
+
 
     .leftSide .intrude-less .column {
         margin-top: 20px;

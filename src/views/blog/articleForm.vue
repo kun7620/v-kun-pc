@@ -16,8 +16,8 @@
                 <el-switch v-model="blogArticle.articleIsEncryption"></el-switch>
             </el-form-item>
             <el-row>
-                <ueditor ref="ueditor" height="400" :initContent="blogArticle.articleContent" v-if="editType==='ueditor'"></ueditor>
-                <markdown ref="markdown" v-if="editType==='markdown'"/>
+                <ueditor ref="ueditor" height="400" :initContent="blogArticle.articleContent" v-if="blogArticle.articleEditor==='ueditor'"></ueditor>
+                <markdown ref="markdown" v-if="blogArticle.articleEditor==='markdown'"/>
             </el-row>
         </el-form>
     </container>
@@ -38,43 +38,44 @@ export default {
                 articleIsPublic: false,
                 articleIsEncryption: false,
                 articleContent: '',
-                articleAbstract: ''
-            },
-            editType: 'ueditor'
+                articleAbstract: '',
+                articleEditor: 'ueditor'
+            }
         };
     },
     methods: {
         submit () {
             const that = this;
-            that.articleAbstract = '';
+            that.blogArticle.articleAbstract = '';
             // 提取摘要
             let plainTxt = '';
-            if (that.editType === 'ueditor') {
+            if (that.blogArticle.articleEditor === 'ueditor') {
                 plainTxt = this.$refs.ueditor.ue.getPlainTxt();
-                that.articleContent = this.$refs.ueditor.getContent().replace(/&nbsp;/g, ' ').replace(/<br\/>/g, '\n');
+                that.blogArticle.articleContent = this.$refs.ueditor.getContent().replace(/&nbsp;/g, ' ').replace(/<br\/>/g, '\n');
             } else {
                 plainTxt = this.$refs.markdown.content;
-                that.articleContent = this.$refs.markdown.content;
+                that.blogArticle.articleContent = this.$refs.markdown.content;
             }
             const split = plainTxt.split('\n');
             for (let i = 0; i < split.length && i < 5; i++) {
-                that.articleAbstract += split[i] + '<br\>';
+                that.blogArticle.articleAbstract += split[i] + '<br\>';
             }
             that.axios.post('/blog/article', {
                 articleName: that.blogArticle.articleName,
                 articleIsPublic: that.blogArticle.articleIsPublic ? '1' : '0',
                 articleIsEncryption: that.blogArticle.articleIsEncryption ? '1' : '0',
-                articleContent: that.articleContent,
-                articleAbstract: that.articleAbstract
+                articleContent: that.blogArticle.articleContent,
+                articleAbstract: that.blogArticle.articleAbstract,
+                articleEditor: that.blogArticle.articleEditor
             }).then(r => {
                 that.$message.success('操作成功');
             });
         },
         changeEdit () {
-            if (this.editType === 'ueditor') {
-                this.editType = 'markdown';
+            if (this.blogArticle.articleEditor === 'ueditor') {
+                this.blogArticle.articleEditor = 'markdown';
             } else {
-                this.editType = 'ueditor';
+                this.blogArticle.articleEditor = 'ueditor';
             }
         },
         changeEdit1 () {
